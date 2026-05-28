@@ -3,7 +3,7 @@
  * @file interactions.ts - Fixed version
  */
 
-import { get, post, put, del } from '../api/client';
+import { get, post, put, del } from '../../api/client';
 
 export interface Comment {
   id: string;

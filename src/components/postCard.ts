@@ -19,24 +19,31 @@ export default function postCard(
 ): string {
   const {
     id,
-    title = '',
-    body = '',
-    tags = [],
+    title,
+    body,
+    tags,
     media,
     created,
-    author = { name: 'Unknown', email: 'unknown@mail.com' },
-    _count = { comments: 0, reactions: 0 },
-    reactions = [],
+    author,
+    _count,
+    reactions,
   } = post;
+
+  // Sanitize all fields that the API can return as null (not just undefined)
+  // Destructuring defaults only fire for undefined, not null — so we handle null here
+  const safeTitle = title ?? '';
+  const safeBody = body ?? '';
+  const safeTags = tags ?? [];
+  const safeAuthor = author ?? { name: 'Unknown', email: 'unknown@mail.com' };
+  const safeCount = _count ?? { comments: 0, reactions: 0 };
+  const safeReactions = reactions ?? [];
 
   // Check if current user owns this post
   const currentUser = getLocalItem('user');
-  const isOwner = currentUser && author.name === currentUser;
+  const isOwner = currentUser && safeAuthor.name === currentUser;
 
-  // Fallback avatar
-  const avatarUrl =
-    author?.avatar?.url || 'https://via.placeholder.com/50?text=U';
-  const avatarAlt = author?.avatar?.alt || author?.name || 'User';
+  const avatarUrl = safeAuthor?.avatar?.url || 'https://placehold.co/50x50?text=U';
+  const avatarAlt = safeAuthor?.avatar?.alt || safeAuthor?.name || 'User';
 
   // Format the date
   const createdDate = created ? new Date(created) : new Date();
@@ -44,13 +51,13 @@ export default function postCard(
 
   // Reaction count
   const reactionCount =
-    reactions.reduce((total, reaction) => total + reaction.count, 0) || 0;
+    safeReactions.reduce((total, reaction) => total + reaction.count, 0) || 0;
 
   // Truncate text
   const truncatedBody =
-    body.length > 120 ? body.substring(0, 120) + '...' : body;
+    safeBody.length > 120 ? safeBody.substring(0, 120) + '...' : safeBody;
   const truncatedTitle =
-    title.length > 50 ? title.substring(0, 50) + '...' : title;
+    safeTitle.length > 50 ? safeTitle.substring(0, 50) + '...' : safeTitle;
 
   return `
     <article class="bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-xl transition-all duration-300 hover:border-orange-400 dark:hover:border-orange-600 transform hover:-translate-y-1" data-post-id="${id}" id="post-${id}" style="animation-delay: ${animationDelay}s">
@@ -58,7 +65,7 @@ export default function postCard(
         media?.url
           ? `
         <div class="mb-6 -mx-6 sm:-mx-8 -mt-6 sm:-mt-8 rounded-t-3xl overflow-hidden">
-          <img src="${media.url}" alt="${media.alt || 'Post image'}" loading="lazy" class="w-full h-72 sm:h-80 md:h-96 lg:h-[28rem] object-cover transition-transform duration-500 hover:scale-110">
+          <img src="${media.url}" alt="${media.alt || 'Post image'}" loading="lazy" class="w-full h-72 sm:h-80 md:h-96 lg:h-112 object-cover transition-transform duration-500 hover:scale-110">
         </div>
       `
           : ''
@@ -67,16 +74,16 @@ export default function postCard(
       <header class="flex items-start justify-between mb-5">
         <div class="flex items-center gap-4">
           <div class="cursor-pointer shrink-0 group"
-                 onclick="navigateToProfile('${author?.name || 'Unknown'}')"
+                 onclick="navigateToProfile('${safeAuthor?.name || 'Unknown'}')"
                  style="cursor: pointer;">
                 <img src="${avatarUrl}" alt="${avatarAlt}" loading="lazy" class="w-12 h-12 sm:w-14 sm:h-14 rounded-full border-2 border-orange-400 dark:border-orange-500 object-cover transition-all duration-300 group-hover:scale-110 group-hover:border-orange-500 dark:group-hover:border-orange-400 group-hover:shadow-md">
             </div>
           <div class="min-w-0 flex-1">
               <h4 class="text-base sm:text-lg font-bold text-slate-900 dark:text-white mb-1">
-                <a href="/profile?user=${author?.name || 'Unknown'}"
+                <a href="/profile?user=${safeAuthor?.name || 'Unknown'}"
                   class="hover:text-orange-600 dark:hover:text-orange-500 transition-colors duration-200"
-                  onclick="event.preventDefault(); navigateToProfile('${author?.name || 'Unknown'}')">
-                  ${author?.name || 'Unknown'}
+                  onclick="event.preventDefault(); navigateToProfile('${safeAuthor?.name || 'Unknown'}')">
+                  ${safeAuthor?.name || 'Unknown'}
                  </a>
               </h4>
               <p class="text-xs sm:text-sm text-slate-500 dark:text-slate-400 font-medium">${timeAgo}</p>
@@ -122,9 +129,9 @@ export default function postCard(
           <p class="line-clamp-3">${truncatedBody}</p>
         </div>
         ${
-          tags.length > 0
+          safeTags.length > 0
             ? `<div class="flex flex-wrap gap-2 mt-4">
-                ${tags
+                ${safeTags
                   .slice(0, 3)
                   .map(
                     (tag) =>
@@ -132,8 +139,8 @@ export default function postCard(
                   )
                   .join('')}
                 ${
-                  tags.length > 3
-                    ? `<span class="inline-flex items-center px-3 py-1.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 text-xs font-semibold rounded-full border border-slate-300 dark:border-slate-600">+${tags.length - 3}</span>`
+                  safeTags.length > 3
+                    ? `<span class="inline-flex items-center px-3 py-1.5 bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-400 text-xs font-semibold rounded-full border border-slate-300 dark:border-slate-600">+${safeTags.length - 3}</span>`
                     : ''
                 }
               </div>`
@@ -156,8 +163,7 @@ export default function postCard(
               <span class="text-sm">${reactionCount}</span>
             </button>
 
-            <!-- Reactions Modal -->
-            <div class="absolute bottom-full left-0 mb-3 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-600 rounded-2xl p-3 shadow-xl z-50 hidden" id="reactions-${id}" style="display: none;">
+            <div class="absolute bottom-full left-0 mb-3 bg-white dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-600 rounded-2xl p-3 shadow-xl z-50 hidden" id="reactions-${id}">
               <div class="flex gap-2">
                 ${['👍', '❤️', '😂', '😮', '😢', '😡']
                   .map(
@@ -172,7 +178,7 @@ export default function postCard(
           <!-- Comment Button -->
           <button class="flex items-center justify-center gap-2 flex-1 min-w-[100px] px-4 py-3 bg-slate-100 dark:bg-slate-700 hover:bg-orange-100 dark:hover:bg-orange-900/20 text-slate-600 dark:text-slate-300 hover:text-orange-600 dark:hover:text-orange-500 border-2 border-slate-300 dark:border-slate-600 hover:border-orange-400 dark:hover:border-orange-500 rounded-xl transition-all duration-200 text-sm font-semibold group" data-post-id="${id}" onclick="toggleComments(${id})">
             <i class="fa-solid fa-comment text-base group-hover:scale-110 transition-transform duration-200"></i>
-            <span class="text-sm">${_count.comments}</span>
+            <span class="text-sm">${safeCount.comments}</span>
           </button>
 
           <!-- View Full Post Button -->
@@ -183,38 +189,37 @@ export default function postCard(
         </div>
       </footer>
 
-      <!-- Comments Section -->
-<div class="mt-6 bg-slate-100 dark:bg-slate-900 rounded-2xl p-5 sm:p-6 border-2 border-slate-200 dark:border-slate-700 hidden shadow-md" id="comments-${id}" style="display: none;">
-  <div class="flex items-center justify-between mb-5">
-    <h4 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
-      <i class="fa-solid fa-comment text-orange-600 dark:text-orange-500"></i> Comments
-    </h4>
-    <button class="p-2 hover:bg-orange-100 dark:hover:bg-orange-900/20 rounded-xl text-slate-500 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-500 border-2 border-transparent hover:border-orange-400 dark:hover:border-orange-500 transition-all duration-200" onclick="toggleComments(${id})">
-      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
-      </svg>
-    </button>
-  </div>
-  <div class="space-y-4 mb-5" id="comments-list-${id}">
-    <!-- Comments will be loaded here -->
-  </div>
-  <div class="flex gap-3">
-    <input
-      type="text"
-      id="comment-input-${id}"
-      class="flex-1 px-4 py-3 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all duration-200 text-sm"
-      placeholder="Write a comment..."
-      maxlength="280"
-      onkeypress="if(event.key === 'Enter') submitComment(${id})"
-    >
-    <button class="p-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl transition-all duration-200 shadow-md hover:shadow-lg hover:scale-[1.02]" onclick="submitComment(${id})">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-        <line x1="22" y1="2" x2="11" y2="13"></line>
-        <polygon points="22,2 15,22 11,13 2,9 22,2"></polygon>
-      </svg>
-    </button>
-  </div>
-</div>
+      <div class="mt-6 bg-slate-100 dark:bg-slate-900 rounded-2xl p-5 sm:p-6 border-2 border-slate-200 dark:border-slate-700 hidden shadow-md" id="comments-${id}">
+        <div class="flex items-center justify-between mb-5">
+          <h4 class="text-lg sm:text-xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+            <i class="fa-solid fa-comment text-orange-600 dark:text-orange-500"></i> Comments
+          </h4>
+          <button class="p-2 hover:bg-orange-100 dark:hover:bg-orange-900/20 rounded-xl text-slate-500 dark:text-slate-400 hover:text-orange-600 dark:hover:text-orange-500 border-2 border-transparent hover:border-orange-400 dark:hover:border-orange-500 transition-all duration-200" onclick="toggleComments(${id})">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path>
+            </svg>
+          </button>
+        </div>
+        <div class="space-y-4 mb-5" id="comments-list-${id}">
+          <!-- Comments will be loaded here -->
+        </div>
+        <div class="flex gap-3">
+          <input
+            type="text"
+            id="comment-input-${id}"
+            class="flex-1 px-4 py-3 bg-white dark:bg-slate-800 border-2 border-slate-300 dark:border-slate-600 rounded-xl text-slate-900 dark:text-white placeholder-slate-500 dark:placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-orange-500/30 focus:border-orange-500 transition-all duration-200 text-sm"
+            placeholder="Write a comment..."
+            maxlength="280"
+            onkeypress="if(event.key === 'Enter') submitComment(${id})"
+          >
+          <button class="p-3 bg-orange-500 hover:bg-orange-600 text-white rounded-xl transition-all duration-200 shadow-md hover:shadow-lg hover:scale-[1.02]" onclick="submitComment(${id})">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="22" y1="2" x2="11" y2="13"></line>
+              <polygon points="22,2 15,22 11,13 2,9 22,2"></polygon>
+            </svg>
+          </button>
+        </div>
+      </div>
     </article>
   `;
 }
@@ -240,12 +245,14 @@ function getTimeAgo(date: Date): string {
 }
 
 /**
+ * FIX #3: Replaced unreliable :hover check with mouseenter/mouseleave data flags.
  * Show reactions modal on hover
  */
 function showReactionsModal(postId: number): void {
   const modal = document.getElementById(`reactions-${postId}`);
   if (modal) {
-    modal.style.display = 'block';
+    modal.dataset.hovered = 'true';
+    modal.classList.remove('hidden');
   }
 }
 
@@ -253,13 +260,16 @@ function showReactionsModal(postId: number): void {
  * Hide reactions modal when not hovering
  */
 function hideReactionsModal(postId: number): void {
-  // Add a small delay to allow clicking on reactions
-  setTimeout(() => {
-    const modal = document.getElementById(`reactions-${postId}`);
-    if (modal && !modal.matches(':hover')) {
-      modal.style.display = 'none';
-    }
-  }, 200);
+  const modal = document.getElementById(`reactions-${postId}`);
+  if (modal) {
+    modal.dataset.hovered = 'false';
+    // Small delay to allow clicking a reaction before the modal hides
+    setTimeout(() => {
+      if (modal.dataset.hovered === 'false') {
+        modal.classList.add('hidden');
+      }
+    }, 200);
+  }
 }
 
 // Make functions globally available

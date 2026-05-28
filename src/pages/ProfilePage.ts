@@ -1,7 +1,7 @@
 import { type NoroffPost } from '../services/posts/posts';
 import { getLocalItem } from '../utils/storage';
 import { isLoggedIn } from '../utils/auth';
-import { get, put } from '../services/api/client';
+import { get, put } from '../api/client';
 import type { UserProfile, FollowResponse, ProfileWithFollowData } from '../types/index';
 
 export default async function ProfilePage(): Promise<string> {

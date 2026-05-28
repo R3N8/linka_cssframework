@@ -7,7 +7,7 @@ This project demonstrates contemporary web development practices: CSS framework 
 
 ## Live Project & Repository
 
-**Production Deploy:** [https://linka-social.netlify.app/](https://linka-social.netlify.app/)  
+**Production Deploy:** [https://linka.netlify.app/](https://linka1.netlify.app/)  
 **GitHub Repository:** [https://github.com/R3N8/social_platform.git](https://github.com/R3N8/social_platform.git)  
 **API Base URL:** [https://v2.api.noroff.dev/social/posts](https://v2.api.noroff.dev/social/posts)
 

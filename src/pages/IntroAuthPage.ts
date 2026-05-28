@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { gsap } from 'gsap';
-import { loginUser, registerUser, fetchApiKey } from '../services/api/client';
+import { fetchApiKey } from '../api/client';
+import { loginUser, registerUser } from '../api/auth';
 import { setLocalItem } from '../utils/storage';
 import { renderRoute } from '../router';
 import { isLoggedIn } from '../utils/auth';

@@ -50,3 +50,12 @@ export function isTokenExpired(): boolean {
     return true; // If we can't parse the token, consider it expired
   }
 }
+
+export const tokenFromAnyKey = (): string =>
+  localStorage.getItem('accessToken') ||
+  localStorage.getItem('token') ||
+  (JSON.parse(localStorage.getItem('auth') || 'null')?.accessToken ?? '');
+
+export const isLoggedInNow = (): boolean => {
+  return !!tokenFromAnyKey();
+};

@@ -1,13 +1,9 @@
-/**
- * @file router/index.ts
- * @description App routing + render. Uses LINKA IntroAuthPage for /, /login, /register.
- */
-
 import IntroAuthPage from '../pages/IntroAuthPage.js';
-import FeedPage from '../pages/FeedPage';
+import FeedPage from '../features/feed/FeedPage.js';
 import ProfilePage from '../pages/ProfilePage';
 import NotFoundPage from '../pages/NotFoundPage';
-import { APP_CONTAINER_CLASSNAME } from '../constant';
+
+import { APP_CONTAINER_CLASSNAME } from '../constants/app.js';
 import { isLoggedIn } from '../utils/auth';
 
 type RouteDef = {
@@ -16,89 +12,61 @@ type RouteDef = {
   protected?: boolean;
 };
 
-const PATHS = {
-  // Unified intro + auth
+const ROUTES: Record<string, RouteDef> = {
   root: { url: '/', component: IntroAuthPage },
   login: { url: '/login', component: IntroAuthPage },
   register: { url: '/register', component: IntroAuthPage },
 
-  // App
   feed: { url: '/feed', component: FeedPage, protected: true },
   profile: { url: '/profile', component: ProfilePage, protected: true },
-} as const;
+};
 
-/**
- * Core router: resolves a path to HTML from a component.
- */
-export default async function router(
-  currentPath = '',
-  routes: Record<string, RouteDef> = PATHS
-): Promise<string> {
-  const currentRoute =
-    Object.values(routes).find((r) => r.url === currentPath) ?? null;
-
-  // Default 404
-  let html = await NotFoundPage();
-
-  if (currentRoute) {
-    // If protected route and not logged in -> send to intro
-    if (currentRoute.protected && !isLoggedIn()) {
-      history.pushState({ path: '/' }, '', '/');
-      html = await routes.root.component();
-    }
-    // If user is logged in and hits any auth route -> go to feed
-    else if (
-      isLoggedIn() &&
-      (currentPath === '/' ||
-        currentPath === '/login' ||
-        currentPath === '/register')
-    ) {
-      history.pushState({ path: '/feed' }, '', '/feed');
-      html = await routes.feed.component();
-    }
-    // Normal render
-    else {
-      html = await currentRoute.component();
-    }
-  }
-
-  return html;
+function matchRoute(path: string): RouteDef | null {
+  return Object.values(ROUTES).find(r => r.url === path) ?? null;
 }
 
-/**
- * Render a given path into the app container and run post-render hooks.
- */
-export async function renderRoute(path?: string) {
-  const targetPath = path ?? window.location.pathname;
-  const contentContainer = document.getElementById(APP_CONTAINER_CLASSNAME);
-  if (!targetPath || !contentContainer) return;
+export default async function router(path: string): Promise<string> {
+  const currentPath = path || window.location.pathname;
+  const route = matchRoute(currentPath);
 
-  // Optional loading screen 
-  const loadingScreen = (window as any).loadingScreen;
-  const isAuthRoute =
-    targetPath === '/' || targetPath === '/login' || targetPath === '/register';
+  // 404 fallback
+  if (!route) return await NotFoundPage();
 
-  if (loadingScreen && isAuthRoute) {
-    loadingScreen.showWithMessage(
-      targetPath === '/register'
-        ? 'Loading Registration...'
-        : 'Loading Sign In...'
-    );
-    await new Promise((r) => setTimeout(r, 600));
+  // 🔐 protected route guard
+  if (route.protected && !isLoggedIn()) {
+    history.pushState({}, '', '/');
+    return await ROUTES.root.component();
   }
 
-  const html = await router(targetPath);
-  contentContainer.innerHTML = html;
+  // 🔁 auth redirect (if logged in)
+  if (
+    isLoggedIn() &&
+    (currentPath === '/' || currentPath === '/login' || currentPath === '/register')
+  ) {
+    history.pushState({}, '', '/feed');
+    return await ROUTES.feed.component();
+  }
 
-  // Update navbar visibility based on current route
+  return await route.component();
+}
+
+export async function renderRoute(path?: string) {
+  const targetPath = path ?? window.location.pathname;
+  const container = document.getElementById(APP_CONTAINER_CLASSNAME);
+
+  if (!container) return;
+
+  const html = await router(targetPath);
+  container.innerHTML = html;
+
+  // Optional navbar hook (safe)
   try {
-    const updateNavbarVisibility = (window as any).updateNavbarVisibility as ((p: string) => void) | undefined;
-    if (typeof updateNavbarVisibility === 'function') {
-      updateNavbarVisibility(targetPath);
-    }
+    (window as any).updateNavbarVisibility?.(targetPath);
   } catch {}
 
-  if (loadingScreen && isAuthRoute) {
-    setTimeout(() => loadingScreen.hideLoadingScreen(), 400);
+  // Optional loading screen hook (safe)
+  const loading = (window as any).loadingScreen;
+  if (loading) {
+    setTimeout(() => loading.hideLoadingScreen(), 300);
   }
 }

@@ -15,7 +15,7 @@ import '@fortawesome/fontawesome-free/css/all.css';
 import './style.css';
 import { renderRoute } from './router';
 import LoadingScreen from './pages/LoadingScreen.js';
-import NavbarPage, { initNavbar } from './pages/NavbarPage.js';
+import NavbarPage, { initNavbar } from './components/navbar/navbar.js';
 
 // Initialize loading screen
 const loadingScreen = new LoadingScreen();
