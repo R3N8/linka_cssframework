@@ -3,7 +3,7 @@ import { getAccessToken } from "./auth";
 
 const API_KEY_HEADER = "X-Noroff-API-Key";
 
-export function buildHeaders(custom?: HeadersInit): HeadersInit {
+export function buildHeaders(custom: HeadersInit = {}): HeadersInit {
   const headers: Record<string, string> = {
     Accept: "application/json",
     ...(custom as Record<string, string>),

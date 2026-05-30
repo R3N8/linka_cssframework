@@ -1,46 +1,27 @@
-import { get, post, put, del } from '../../api/client';
-import type { NoroffPost, PostsApiResponse } from '../../types/post';
-import { API } from '../../services/api/endpoint';
+import { get, post, put, del } from "../../api/client";
+import type { NoroffPost } from "../../types/post";
+import { API } from "../api/endpoint";
 
-//READ METHODS
+type PaginatedResponse<T> = {
+  data: T[];
+  meta: {
+    isLastPage: boolean;
+    currentPage?: number;
+  };
+};
+
+/* ----------------------------- READ ----------------------------- */
 
 export async function getAllPosts(
-  limit = 50,
-  page = 1
-): Promise<PostsApiResponse> {
-  const params = new URLSearchParams({
-    limit: String(limit),
-    page: String(page),
-    _author: 'true',
-    _reactions: 'true',
-    _comments: 'true',
-  });
-
-  return get<PostsApiResponse>(
-    `${API.social.posts}?${params.toString()}`
+  page: number,
+  limit: number
+): Promise<PaginatedResponse<NoroffPost>> {
+  return get<PaginatedResponse<NoroffPost>>(
+    `/social/posts?page=${page}&limit=${limit}&_author=true&_reactions=true`
   );
 }
 
-export async function getAllPostsUnpaginated(limit = 15): Promise<NoroffPost[]> {
-  let page = 1;
-  let all: NoroffPost[] = [];
-
-  while (true) {
-    const res = await getAllPosts(limit, page);
-    all = all.concat(res.data);
-
-    if (res.meta.isLastPage) break;
-    page++;
-  }
-
-  return all;
-}
-
-export async function getPublicPosts(limit = 50, page = 1) {
-  return getAllPosts(limit, page);
-}
-
-export async function getPostById(id: number): Promise<NoroffPost> {
+export async function getPostById(id: number) {
   const res = await get<{ data: NoroffPost }>(
     `${API.social.posts}/${id}?_author=true&_reactions=true&_comments=true`
   );
@@ -52,40 +33,38 @@ export async function searchPosts(query: string, limit = 20) {
   const params = new URLSearchParams({
     q: query,
     limit: String(limit),
-    _author: 'true',
-    _reactions: 'true',
+    _author: "true",
+    _reactions: "true",
   });
 
-  return get<PostsApiResponse>(
+  return get<PaginatedResponse<NoroffPost>>(
     `${API.social.posts}/search?${params.toString()}`
   );
 }
 
-//WRITE METHODS
+export async function getAllPostsUnpaginated(limit = 50) {
+  return get<NoroffPost[]>(
+    `/social/posts?_author=true&_reactions=true&limit=${limit}`
+  );
+}
+
+/* ----------------------------- WRITE ----------------------------- */
 
 export async function createPost(payload: {
   title: string;
   body: string;
   tags?: string[];
   media?: { url: string; alt?: string };
-}): Promise<NoroffPost> {
-  const response = await post(API.social.posts, {
-    ...payload,
-    tags: payload.tags?.length ? payload.tags : [],
-  });
+}) {
+  const res = await post<{ data: NoroffPost }>(
+    API.social.posts,
+    {
+      ...payload,
+      tags: payload.tags ?? [],
+    }
+  );
 
-  const newPost = (response as any).data ?? response;
-
-  return {
-    ...newPost,
-    tags: newPost.tags ?? [],
-    _count: newPost._count ?? { comments: 0, reactions: 0 },
-    reactions: newPost.reactions ?? [],
-    author: {
-      ...newPost.author,
-      avatar: newPost.author?.avatar ?? { url: '', alt: '' },
-    },
-  };
+  return res.data;
 }
 
 export const updatePost = (id: number, payload: any) =>
@@ -93,19 +72,6 @@ export const updatePost = (id: number, payload: any) =>
 
 export const deletePost = (id: number) =>
   del(`${API.social.posts}/${id}`);
-
-export const addComment = (id: number, body: string) =>
-  post(`${API.social.posts}/${id}/comment`, { body });
-
-export const replyToComment = (
-  id: number,
-  parentCommentId: number,
-  body: string
-) =>
-  post(`${API.social.posts}/${id}/comment`, {
-    body,
-    replyToId: parentCommentId,
-  });
 
 export const reactToPost = (id: number, symbol: string) =>
   put(`${API.social.posts}/${id}/react/${symbol}`, {});

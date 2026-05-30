@@ -69,11 +69,7 @@ export async function createComment(
   }
 
   try {
-    console.log(`Creating comment on post ${postId}:`, commentData);
-
     const response = await post(`/social/posts/${postId}/comment`, commentData);
-
-    console.log('Create comment response:', response);
 
     // Handle the response according to the API docs
     if (response?.data) {
@@ -111,21 +107,9 @@ export async function deleteComment(
   commentId: string
 ): Promise<void> {
   try {
-    console.log(`Deleting comment ${commentId} from post ${postId}`);
     await del(`/social/posts/${postId}/comment/${commentId}`);
-    console.log('Comment deleted successfully');
-  } catch (error: any) {
+  } catch (error) {
     console.error('Error deleting comment:', error);
-
-    if (error?.message?.toLowerCase().includes('unauthorized')) {
-      throw new Error('You can only delete your own comments.');
-    } else if (error?.message?.toLowerCase().includes('not found')) {
-      throw new Error('The comment you are trying to delete was not found.');
-    } else {
-      throw new Error(
-        error?.message || 'Failed to delete comment. Please try again.'
-      );
-    }
   }
 }
 
@@ -140,12 +124,10 @@ export async function reactToPost(
   symbol: string
 ): Promise<void> {
   try {
-    console.log(`Adding reaction ${symbol} to post ${postId}`);
     await put(
       `/social/posts/${postId}/react/${encodeURIComponent(symbol)}`,
       {}
     );
-    console.log('Reaction added successfully');
   } catch (error: any) {
     console.error('Error reacting to post:', error);
 
@@ -172,9 +154,7 @@ export async function removeReaction(
   symbol: string
 ): Promise<void> {
   try {
-    console.log(`Removing reaction ${symbol} from post ${postId}`);
     await del(`/social/posts/${postId}/react/${encodeURIComponent(symbol)}`);
-    console.log('Reaction removed successfully');
   } catch (error: any) {
     console.error('Error removing reaction:', error);
 

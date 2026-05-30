@@ -1,4 +1,4 @@
-import { NoroffPost } from '../../../services/posts/posts';
+import type { NoroffPost } from '../../../types/post';
 
 export type FeedState = {
   posts: NoroffPost[];

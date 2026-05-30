@@ -1,13 +1,6 @@
-import {
-  getAllPosts,
-  getPublicPosts,
-  type NoroffPost,
-} from '../../services/posts/posts';
-
-import { isLoggedIn } from '../../utils/auth';
-
+import { searchPosts } from '../../services/posts/posts';
+import type { NoroffPost } from '../../types/post';
 import { renderRoute } from '../../router';
-
 import type { SearchResult } from './navbar.types';
 
 export async function enhancedSearch(
@@ -16,36 +9,19 @@ export async function enhancedSearch(
   const results: SearchResult[] = [];
 
   try {
-    const postsResponse = await getAllPosts(
-      50,
-      1
-    );
+    const postsResponse = await searchPosts(query, 50);
 
-    const matchingPosts = postsResponse.data.filter(
-      (post: NoroffPost) =>
-        post.title
-          .toLowerCase()
-          .includes(query.toLowerCase()) ||
-        post.body
-          .toLowerCase()
-          .includes(query.toLowerCase()) ||
-        post.author.name
-          .toLowerCase()
-          .includes(query.toLowerCase())
-    );
+    const matchingPosts = postsResponse.data;
 
     const uniqueUsers = new Map();
 
-    matchingPosts.forEach((post) => {
+    matchingPosts.forEach((post: NoroffPost) => {
       if (
         post.author.name
           .toLowerCase()
           .includes(query.toLowerCase())
       ) {
-        uniqueUsers.set(
-          post.author.name,
-          post.author
-        );
+        uniqueUsers.set(post.author.name, post.author);
       }
     });
 
@@ -56,7 +32,7 @@ export async function enhancedSearch(
       });
     });
 
-    matchingPosts.forEach((post) => {
+    matchingPosts.forEach((post: NoroffPost) => {
       results.push({
         type: 'post',
         data: post,
@@ -83,37 +59,15 @@ export function setupSearch(
   searchBtn: HTMLElement,
   searchInput: HTMLInputElement
 ) {
-  async function loadPosts() {
-    try {
-      if (isLoggedIn()) {
-        await getAllPosts(100, 1);
-      } else {
-        await getPublicPosts(100, 1);
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  loadPosts();
-
   async function handleSearch() {
-    const query = searchInput.value
-      .toLowerCase()
-      .trim();
+    const query = searchInput.value.toLowerCase().trim();
 
     if (!query) {
       window.searchQuery = undefined;
-
-      if (window.location.pathname === '/feed') {
-        renderRoute('/feed');
-      }
-
       return;
     }
 
-    const results =
-      await enhancedSearch(query);
+    const results = await enhancedSearch(query);
 
     const posts = results
       .filter((r) => r.type === 'post')
@@ -125,35 +79,16 @@ export function setupSearch(
 
     setSearchState(query, posts, users);
 
-    if (
-      window.location.pathname !== '/feed'
-    ) {
-      history.pushState(
-        { path: '/feed' },
-        '',
-        '/feed'
-      );
+    if (window.location.pathname !== '/feed') {
+      history.pushState({ path: '/feed' }, '', '/feed');
     }
 
     renderRoute('/feed');
   }
 
-  searchInput.addEventListener(
-    'input',
-    handleSearch
-  );
-
-  searchBtn.addEventListener(
-    'click',
-    handleSearch
-  );
-
-  searchInput.addEventListener(
-    'keypress',
-    (e) => {
-      if (e.key === 'Enter') {
-        handleSearch();
-      }
-    }
-  );
+  searchInput.addEventListener('input', handleSearch);
+  searchBtn.addEventListener('click', handleSearch);
+  searchInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') handleSearch();
+  });
 }

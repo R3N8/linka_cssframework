@@ -7,9 +7,7 @@ export function navigate(path: NavigationRoute) {
   closeMobileMenu();
 
   history.pushState({ path }, '', path);
-
   renderRoute(path);
-
   updateActiveNav();
 }
 
@@ -21,7 +19,6 @@ export function bindNavigation(
 
   element.addEventListener('click', (e) => {
     e.preventDefault();
-
     navigate(path);
   });
 }

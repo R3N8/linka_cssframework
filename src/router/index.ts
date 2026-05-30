@@ -1,6 +1,6 @@
 import IntroAuthPage from '../pages/IntroAuthPage.js';
 import FeedPage from '../features/feed/FeedPage.js';
-import ProfilePage from '../pages/ProfilePage';
+import ProfilePage from '../features/profile/ProfilePage';
 import NotFoundPage from '../pages/NotFoundPage';
 
 import { APP_CONTAINER_CLASSNAME } from '../constants/app.js';
@@ -13,12 +13,11 @@ type RouteDef = {
 };
 
 const ROUTES: Record<string, RouteDef> = {
-  root: { url: '/', component: IntroAuthPage },
-  login: { url: '/login', component: IntroAuthPage },
+  root:     { url: '/',         component: IntroAuthPage },
+  login:    { url: '/login',    component: IntroAuthPage },
   register: { url: '/register', component: IntroAuthPage },
-
-  feed: { url: '/feed', component: FeedPage, protected: true },
-  profile: { url: '/profile', component: ProfilePage, protected: true },
+  feed:     { url: '/feed',     component: FeedPage,    protected: true },
+  profile:  { url: '/profile',  component: ProfilePage, protected: true },
 };
 
 function matchRoute(path: string): RouteDef | null {
@@ -29,20 +28,16 @@ export default async function router(path: string): Promise<string> {
   const currentPath = path || window.location.pathname;
   const route = matchRoute(currentPath);
 
-  // 404 fallback
   if (!route) return await NotFoundPage();
 
-  // 🔐 protected route guard
-  if (route.protected && !isLoggedIn()) {
-    history.pushState({}, '', '/');
-    return await ROUTES.root.component();
+  const loggedIn = isLoggedIn();
+
+  if (route.protected && !loggedIn) {
+    history.pushState({}, '', '/login');
+    return await ROUTES.login.component();
   }
 
-  // 🔁 auth redirect (if logged in)
-  if (
-    isLoggedIn() &&
-    (currentPath === '/' || currentPath === '/login' || currentPath === '/register')
-  ) {
+  if (loggedIn && ['/', '/login', '/register'].includes(currentPath)) {
     history.pushState({}, '', '/feed');
     return await ROUTES.feed.component();
   }
@@ -51,21 +46,32 @@ export default async function router(path: string): Promise<string> {
 }
 
 export async function renderRoute(path?: string) {
-  const targetPath = path ?? window.location.pathname;
-  const container = document.getElementById(APP_CONTAINER_CLASSNAME);
+  const url = new URL(
+    path ?? window.location.href,
+    window.location.origin
+  );
 
+  const container = document.getElementById(APP_CONTAINER_CLASSNAME);
   if (!container) return;
 
-  const html = await router(targetPath);
+  const query = Object.fromEntries(url.searchParams.entries());
+
+  window.__route = {
+    path: url.pathname,
+    query,
+  };
+
+  const html = await router(url.pathname);
   container.innerHTML = html;
 
-  // Optional navbar hook (safe)
+  window.__routeDidMount?.();
+  window.__routeDidMount = undefined;
+
   try {
-    (window as any).updateNavbarVisibility?.(targetPath);
+    window.updateNavbarVisibility?.(url.pathname);
   } catch {}
 
-  // Optional loading screen hook (safe)
-  const loading = (window as any).loadingScreen;
+  const loading = window.loadingScreen;
   if (loading) {
     setTimeout(() => loading.hideLoadingScreen(), 300);
   }

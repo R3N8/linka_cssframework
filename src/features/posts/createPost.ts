@@ -1,6 +1,6 @@
 import { createPost } from '../../services/posts/posts';
 import { showNotification } from '../../utils/ui/notifications';
-import type { NoroffPost } from '../../services/posts/posts';
+import type { NoroffPost } from '../../types/post';
 import { insertPostIntoFeed } from '../feed/ui/postDom';
 
 export async function handleCreatePost(event: Event): Promise<void> {

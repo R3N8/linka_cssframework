@@ -1,29 +1,38 @@
-import postCard from '../../../components/postCard';
-import type { NoroffPost } from '../../../services/posts/posts';
+import { basePostCard } from '../../../components/basePostCard';
+import type { NoroffPost } from '../../../types/post';
 
 export function insertPostIntoFeed(post: NoroffPost): void {
   const container = document.getElementById('posts-container');
+
   if (!container) return;
 
   const wrapper = document.createElement('div');
-  wrapper.innerHTML = postCard(post, 0);
 
-  const el = wrapper.firstElementChild;
-  if (!el) return;
+  wrapper.innerHTML = basePostCard(post);
 
-  container.insertBefore(el, container.firstChild);
+  const element = wrapper.firstElementChild;
+
+  if (!element) return;
+
+  container.prepend(element);
 }
 
-/**
- * Placeholder for pagination rendering
- */
 export function renderPaginationControls(meta: any): string {
   if (!meta) return '';
 
   return `
     <div class="flex justify-center gap-4 py-6">
-      <button class="px-4 py-2 bg-gray-200 rounded">Prev</button>
-      <button class="px-4 py-2 bg-gray-200 rounded">Next</button>
+      <button
+        class="px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-700"
+      >
+        Prev
+      </button>
+
+      <button
+        class="px-4 py-2 rounded-lg border border-slate-300 dark:border-slate-700"
+      >
+        Next
+      </button>
     </div>
   `;
 }

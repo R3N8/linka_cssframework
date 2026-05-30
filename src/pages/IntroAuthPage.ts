@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { gsap } from 'gsap';
-import { fetchApiKey } from '../api/client';
+import { fetchApiKey } from '../api/auth';
 import { loginUser, registerUser } from '../api/auth';
 import { setLocalItem } from '../utils/storage';
 import { renderRoute } from '../router';
@@ -326,8 +326,8 @@ function setupUI() {
         setTimeout(() => {
           document.body.style.overflow = 'auto';
           // Refresh navbar to show logout button instead of login
-          if (typeof (window as any).refreshNavbar === 'function') {
-            (window as any).refreshNavbar();
+          if (typeof window.refreshNavbar === 'function') {
+            window.refreshNavbar();
           }
           // Small delay to ensure navbar is fully rendered before navigating
           setTimeout(() => {

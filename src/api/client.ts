@@ -1,31 +1,46 @@
-import { buildHeaders } from "./headers";
-import { ApiError } from "../api/errors";
+import { ENV } from "../constants/env";
+import { ApiError } from "./errors";
 
 type Body = object | FormData | null;
 
 interface RequestOptions extends Omit<RequestInit, "body"> {
   body?: Body;
+  skipAuth?: boolean;
 }
 
-async function request<T>(
-  url: string,
+export async function request<T>(
+  endpoint: string,
   options: RequestOptions = {}
 ): Promise<T> {
-  const { body, ...rest } = options;
+  const url = endpoint.startsWith("http")
+    ? endpoint
+    : `${ENV.API_BASE_URL}${endpoint}`;
+
+  const { body, skipAuth, ...rest } = options;
+
+  const headers: Record<string, string> = {
+    Accept: "application/json",
+    ...(rest.headers as Record<string, string>),
+  };
+
+  if (!skipAuth) {
+    const token = localStorage.getItem("accessToken");
+    const apiKey = localStorage.getItem("apiKey");
+
+    if (token) headers.Authorization = `Bearer ${token}`;
+    if (apiKey) headers["X-Noroff-API-Key"] = apiKey;
+  }
 
   const config: RequestInit = {
     ...rest,
-    headers: buildHeaders(rest.headers),
+    headers,
   };
 
-  // Handle request body
   if (body instanceof FormData) {
     config.body = body;
   } else if (body) {
     config.body = JSON.stringify(body);
-
-    (config.headers as Record<string, string>)["Content-Type"] =
-      "application/json";
+    headers["Content-Type"] = "application/json";
   }
 
   const res = await fetch(url, config);
@@ -46,68 +61,14 @@ async function request<T>(
   return data as T;
 }
 
-/* -------------------------------------------------------------------------- */
-/* API KEY                                                                    */
-/* -------------------------------------------------------------------------- */
+export const get = <T>(url: string, opt?: RequestOptions) =>
+  request<T>(url, { method: "GET", ...opt });
 
-export async function fetchApiKey(
-  accessToken: string
-): Promise<string | undefined> {
-  const response = await post<{
-    data: { key: string };
-  }>(
-    "https://v2.api.noroff.dev/auth/create-api-key",
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    }
-  );
+export const post = <T>(url: string, body?: Body, opt?: RequestOptions) =>
+  request<T>(url, { method: "POST", body, ...opt });
 
-  return response?.data?.key;
-}
+export const put = <T>(url: string, body?: Body, opt?: RequestOptions) =>
+  request<T>(url, { method: "PUT", body, ...opt });
 
-/* -------------------------------------------------------------------------- */
-/* PUBLIC METHODS                                                             */
-/* -------------------------------------------------------------------------- */
-
-export const get = <T>(
-  url: string,
-  options?: RequestOptions
-) =>
-  request<T>(url, {
-    method: "GET",
-    ...options,
-  });
-
-export const post = <T>(
-  url: string,
-  body?: Body,
-  options?: RequestOptions
-) =>
-  request<T>(url, {
-    method: "POST",
-    body,
-    ...options,
-  });
-
-export const put = <T>(
-  url: string,
-  body?: Body,
-  options?: RequestOptions
-) =>
-  request<T>(url, {
-    method: "PUT",
-    body,
-    ...options,
-  });
-
-export const del = <T>(
-  url: string,
-  options?: RequestOptions
-) =>
-  request<T>(url, {
-    method: "DELETE",
-    ...options,
-  });
+export const del = <T>(url: string, opt?: RequestOptions) =>
+  request<T>(url, { method: "DELETE", ...opt });
