@@ -1,72 +1,88 @@
-import '@fontsource/bebas-neue';
-import '@fontsource/open-sans/300.css';
-import '@fontsource/open-sans/400.css';
-import '@fontsource/open-sans/500.css';
-import '@fontsource/open-sans/600.css';
-import '@fontsource/open-sans/700.css';
-import '@fontsource/open-sans/800.css';
-import '@fontsource/open-sans/300-italic.css';
-import '@fontsource/open-sans/400-italic.css';
-import '@fontsource/open-sans/500-italic.css';
-import '@fontsource/open-sans/600-italic.css';
-import '@fontsource/open-sans/700-italic.css';
-import '@fontsource/open-sans/800-italic.css';
-import '@fortawesome/fontawesome-free/css/all.css';
-import './style.css';
-import { renderRoute } from './router';
-import LoadingScreen from './pages/LoadingScreen.js';
-import NavbarPage, { initNavbar } from './components/navbar/navbar.js';
+import '@fortawesome/fontawesome-free/css/all.css'
+import './styles/index.css'
 
-const loadingScreen = new LoadingScreen();
+import { renderRoute } from './router'
+import LoadingScreen from './pages/LoadingScreen'
+import { initNavbar } from './components/navbar/navbar.events'
+import { renderNavbar } from './components/navbar/navbar'
 
+
+const loadingScreen = new LoadingScreen()
+
+/* =========================
+   Navbar visibility rules
+========================= */
 function shouldShowNavbar(path: string): boolean {
-  return !['/', '/login', '/register'].includes(path);
+  return !['/', '/login', '/register'].includes(path)
 }
 
-function updateNavbarVisibility(path: string) {
-  const navbar = document.querySelector('#app-navbar') as HTMLElement;
-  if (!navbar) return;
-  navbar.style.display = shouldShowNavbar(path) ? 'block' : 'none';
+function updateNavbarVisibility(path: string): void {
+  const navbar = document.getElementById('app-navbar')
+
+  if (!navbar) return
+
+  navbar.style.display = shouldShowNavbar(path)
+    ? 'block'
+    : 'none'
 }
 
-function refreshNavbar() {
-  document.querySelector('#app-navbar')?.remove();
-  document.body.insertAdjacentHTML('afterbegin', NavbarPage());
-  initNavbar();
-  setTimeout(() => updateNavbarVisibility(window.location.pathname), 10);
+/* =========================
+   Safe navbar refresh
+========================= */
+function refreshNavbar(): void {
+  const existing = document.getElementById('app-navbar')
+  if (existing) existing.remove()
+
+  document.body.insertAdjacentHTML(
+    'afterbegin',
+    renderNavbar()
+  )
+
+  initNavbar()
+
+  // ensure correct visibility after re-render
+  setTimeout(() => {
+    updateNavbarVisibility(window.location.pathname)
+  }, 0)
 }
 
-window.renderRoute = renderRoute;
-window.loadingScreen = loadingScreen;
-window.refreshNavbar = refreshNavbar;
-window.updateNavbarVisibility = updateNavbarVisibility;
+/* =========================
+   GLOBALS (used elsewhere)
+========================= */
+window.renderRoute = renderRoute
+window.loadingScreen = loadingScreen
+window.refreshNavbar = refreshNavbar
+window.updateNavbarVisibility = updateNavbarVisibility
 
+/* =========================
+   BOOTSTRAP
+========================= */
 document.addEventListener('DOMContentLoaded', () => {
-  try {
-    document.body.insertAdjacentHTML('afterbegin', NavbarPage());
-  } catch (error) {
-    console.error('Error creating navbar:', error);
-  }
+  // initial navbar render
+  document.body.insertAdjacentHTML(
+    'afterbegin',
+    renderNavbar()
+  )
 
-  initNavbar();
-  updateNavbarVisibility(window.location.pathname);
+  initNavbar()
 
-  renderRoute(window.location.pathname);
+  updateNavbarVisibility(window.location.pathname)
 
+  renderRoute(window.location.pathname)
+
+  /* =========================
+     POPSTATE FIX (IMPORTANT)
+  ========================= */
   window.addEventListener('popstate', () => {
-    renderRoute(window.location.href);
+    const path =
+      window.location.pathname +
+      window.location.search
+
+    renderRoute(path)
+
     setTimeout(() => {
-      window.updateActiveNav?.();
-      updateNavbarVisibility(window.location.pathname);
-    }, 100);
-  });
-});
-
-function navigateToProfile(username: string) {
-  if (!username || username === 'Unknown') return;
-  const url = `/profile?user=${encodeURIComponent(username)}`;
-  history.pushState({}, '', url);
-  window.renderRoute?.(url);
-}
-
-window.navigateToProfile = navigateToProfile;
+      updateNavbarVisibility(window.location.pathname)
+      window.updateActiveNav?.()
+    }, 0)
+  })
+})

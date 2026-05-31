@@ -1,14 +1,6 @@
 import { get, put } from "../../api/client";
-import type { NoroffPost } from "../../types/post";
+import type { PostsApiResponse } from "../../types/post";
 import type { ProfileWithFollowData } from "../../types";
-
-type PaginatedPosts = {
-  data: NoroffPost[];
-  meta: {
-    isLastPage: boolean;
-    currentPage: number;
-  };
-};
 
 /* ----------------------------- PROFILE ----------------------------- */
 
@@ -23,7 +15,7 @@ export async function fetchUserProfile(username: string) {
 /* ----------------------------- POSTS ----------------------------- */
 
 export async function fetchUserPosts(username: string, page = 1, limit = 15) {
-  return get<PaginatedPosts>(
+  return get<PostsApiResponse>(
     `/social/profiles/${username}/posts?page=${page}&limit=${limit}&_author=true&_reactions=true`
   );
 }

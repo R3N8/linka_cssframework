@@ -1,17 +1,13 @@
 import type { NoroffPost } from "../../../types/post";
+import { renderEmptyState } from "../ui/emptyState";
+import { profilePostCard } from "./profilePostCard";
 
 export function renderPostsTab(posts: NoroffPost[]): string {
-  if (!posts.length) {
-    return `
-      <div class="text-center py-16">
-        No posts yet
-      </div>
-    `;
-  }
+  if (!posts.length) return renderEmptyState("posts");
 
   return `
     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      ${posts.map(renderPostCard).join("")}
+      ${posts.map(profilePostCard).join("")}
     </div>
   `;
 }
@@ -19,44 +15,21 @@ export function renderPostsTab(posts: NoroffPost[]): string {
 export function renderMediaTab(posts: NoroffPost[]): string {
   const media = posts.filter((p) => p.media?.url);
 
-  if (!media.length) {
-    return renderPlaceholderTab("media");
-  }
+  if (!media.length) return renderEmptyState("media");
 
   return `
     <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
-      ${media
-        .map(
-          (p) => `
-        <div class="aspect-square overflow-hidden rounded-lg">
-          <img src="${p.media?.url}" class="w-full h-full object-cover" />
+      ${media.map((p) => `
+        <div class="aspect-square overflow-hidden rounded
+          bg-surface-light dark:bg-surface-dark
+          border border-neutral-400">
+          <img
+            src="${p.media?.url}"
+            alt="media"
+            class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+          />
         </div>
-      `
-        )
-        .join("")}
+      `).join("")}
     </div>
-  `;
-}
-
-export function renderPlaceholderTab(type: string): string {
-  const map: Record<string, string> = {
-    following: "Following list coming soon",
-    followers: "Followers list coming soon",
-    media: "No media available",
-  };
-
-  return `
-    <div class="text-center py-16 text-slate-500">
-      ${map[type] || "Coming soon"}
-    </div>
-  `;
-}
-
-function renderPostCard(post: NoroffPost) {
-  return `
-    <article class="border rounded-lg p-4">
-      <h3 class="font-bold">${post.title}</h3>
-      <p class="text-sm text-gray-500">${post.body || ""}</p>
-    </article>
   `;
 }

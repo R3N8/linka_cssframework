@@ -1,14 +1,12 @@
-import { initProfileAnimations } from "./animations";
+import type { NoroffPost } from "../../../types/post";
+import { initTabs } from "./initTabs";
 import { initFollowUI } from "./followUI";
-import { initializeTabs } from "./tabsUI";
+import { initProfileAnimations } from "./animations";
 
-export function initProfileUI(
-  username: string,
-  isOwn: boolean
-) {
-  initializeTabs(username);
+export function initProfileUI(username: string, posts: NoroffPost[], isOwnProfile: boolean) {
+  initTabs(posts);
 
-  if (!isOwn) {
+  if (!isOwnProfile) {
     initFollowUI(username);
   }
 

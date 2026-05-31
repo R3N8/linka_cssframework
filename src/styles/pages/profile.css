@@ -1,0 +1,25 @@
+.profile-page {
+  background: white;
+}
+
+.dark .profile-page {
+  background: #0a0a0a;
+}
+
+.profile-post {
+  aspect-ratio: 1;
+}
+
+.profile-post img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.profile-banner {
+  height: 24rem;
+}
+
+.profile-avatar {
+  margin-top: -5rem;
+}

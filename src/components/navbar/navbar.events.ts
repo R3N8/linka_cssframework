@@ -1,59 +1,58 @@
-import { logout } from '../../utils/auth';
-import { renderRoute } from '../../router';
-import { bindNavigation } from './navbar.navigation';
-import { setupSearch } from './navbar.search';
-import { initTheme, toggleTheme } from './navbar.theme';
-import { initMobileMenu } from './navbar.mobile';
-import { getNavbarElements } from './navbar.dom';
-import { getStoredUsername } from '../../features/profile/utils/getStoredUsername';
+import { renderRoute } from '../../router'
+import { logout } from '../../utils/auth'
+import { getStoredUsername } from '../../features/profile/utils/getStoredUsername'
+import { initThemeToggle } from '../../utils/theme'
 
-export function initNavbarEvents() {
-  const elements = getNavbarElements();
+export function initNavbar(): void {
+  const username = getStoredUsername() || ''
 
-  bindNavigation(elements.feedBtn, '/feed');
-  bindNavigation(elements.mobileFeedBtn, '/feed');
+  // NAV LINKS (safe fallback via anchors)
+  document.getElementById('nav-logo')?.addEventListener('click', (e) => {
+    e.preventDefault()
+    renderRoute('/feed')
+  })
 
-  // Build profile URL from stored username
-  const currentUser = getStoredUsername();
-  const profilePath = currentUser
-    ? `/profile?user=${encodeURIComponent(currentUser)}`
-    : '/feed';
-
-  bindNavigation(elements.profileBtn, profilePath as any);
-  bindNavigation(elements.mobileProfileBtn, profilePath as any);
-
-  bindNavigation(elements.loginBtn, '/');
-  bindNavigation(elements.mobileLoginBtn, '/');
-
-  elements.logoutBtn?.addEventListener('click', handleLogout);
-  elements.mobileLogoutBtn?.addEventListener('click', handleLogout);
-
-  if (elements.searchBtn && elements.searchInput) {
-    setupSearch(elements.searchBtn, elements.searchInput);
+  // PROFILE
+  const goProfile = () => {
+    if (!username) return
+    renderRoute(`/profile?user=${encodeURIComponent(username)}`)
   }
 
-  if (elements.mobileSearchBtn && elements.mobileSearchInput) {
-    setupSearch(elements.mobileSearchBtn, elements.mobileSearchInput);
+  document.getElementById('nav-profile')?.addEventListener('click', goProfile)
+  document.getElementById('mobile-nav-profile')?.addEventListener('click', goProfile)
+
+  // SEARCH
+  const runSearch = (id: string) => {
+    const input = document.getElementById(id) as HTMLInputElement
+    const q = input?.value.trim()
+    if (!q) return
+    renderRoute(`/search?q=${encodeURIComponent(q)}`)
   }
 
-  initMobileMenu();
-  initTheme();
+  document.getElementById('search-btn')?.addEventListener('click', () => runSearch('navbar-search'))
+  document.getElementById('mobile-search-btn')?.addEventListener('click', () => runSearch('mobile-navbar-search'))
 
-  document
-    .getElementById('theme-toggle')
-    ?.addEventListener('click', toggleTheme);
+  // LOGOUT
+  document.getElementById('nav-logout')?.addEventListener('click', handleLogout)
+  document.getElementById('mobile-nav-logout')?.addEventListener('click', handleLogout)
 
-  document
-    .getElementById('mobile-theme-toggle')
-    ?.addEventListener('click', toggleTheme);
-}
+  function handleLogout(): void {
+    if (!confirm('Logout?')) return
+    logout()
+    renderRoute('/')
+  }
 
-function handleLogout(e: Event) {
-  e.preventDefault();
+  // MOBILE MENU
+  document.getElementById('mobile-menu-toggle')?.addEventListener('click', () => {
+    document.getElementById('mobile-menu')?.classList.toggle('hidden')
+  })
 
-  if (!confirm('Are you sure you want to logout?')) return;
+  // THEME
+  const themeInput = document.getElementById('theme-toggle') as HTMLButtonElement | null
+  if (themeInput) {
+    initThemeToggle(themeInput)
+  }
 
-  logout();
-  history.pushState({ path: '/' }, '', '/');
-  renderRoute('/');
+  document.getElementById('nav-login')?.addEventListener('click', () => renderRoute('/login'))
+  document.getElementById('mobile-nav-login')?.addEventListener('click', () => renderRoute('/login'))
 }

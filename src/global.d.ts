@@ -16,5 +16,6 @@ declare global {
     updateNavbarVisibility?: (path: string) => void;
     updateActiveNav?: () => void;
     navigateToProfile?: (username: string) => void;
+    __profilePosts: NoroffPost[] | undefined;
   }
 }

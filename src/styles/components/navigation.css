@@ -1,0 +1,38 @@
+.nav-btn.active {
+  @apply font-semibold;
+
+  color: rgb(249 115 22);
+}
+
+.mobile-menu-toggle {
+  @apply transition-all duration-300;
+}
+
+.mobile-menu-toggle:hover {
+  transform: scale(1.1);
+}
+
+.mobile-menu {
+  @apply transition-all duration-300 ease-out;
+
+  transform-origin: top;
+}
+
+.mobile-menu.hidden {
+  @apply opacity-0;
+
+  transform: scaleY(0);
+}
+
+.mobile-menu:not(.hidden) {
+  @apply opacity-100;
+
+  transform: scaleY(1);
+}
+
+@media (max-width: 768px) {
+  .mobile-menu {
+    overflow-y: auto;
+    max-height: calc(100vh - 4rem);
+  }
+}

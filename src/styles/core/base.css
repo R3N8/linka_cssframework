@@ -1,0 +1,38 @@
+html,
+body {
+  font-family: 'Space Grotesk', sans-serif;
+
+  @apply min-h-screen pt-8 transition-all duration-300;
+
+  background: #ffffff;
+  color: #111111;
+
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+.dark body {
+  background: #0a0a0a;
+  color: #fafafa;
+}
+
+html.light-mode body {
+  background: #ffffff;
+}
+
+#starfield,
+#canvas3d {
+  z-index: 1;
+}
+
+a {
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: rgb(249 115 22);
+}
+
+::selection {
+  background: rgb(249 115 22 / 0.2);
+}

@@ -5,7 +5,7 @@ export function renderMedia(posts: NoroffPost[]): string {
 
   if (!media.length) {
     return `
-      <div class="text-center py-16 text-slate-500">
+      <div class="text-center py-16 text-neutral-500">
         No media available
       </div>
     `;
@@ -16,10 +16,10 @@ export function renderMedia(posts: NoroffPost[]): string {
       ${media
         .map(
           (p) => `
-          <div class="aspect-square overflow-hidden rounded-lg bg-slate-200 dark:bg-slate-700">
+          <div class="aspect-square overflow-hidden rounded-lg bg-neutral-100 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800">
             <img
               src="${p.media?.url}"
-              class="w-full h-full object-cover transition-transform hover:scale-105"
+              class="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
             />
           </div>
         `

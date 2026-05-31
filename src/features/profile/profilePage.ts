@@ -23,12 +23,13 @@ export default async function ProfilePage(): Promise<string> {
     const currentUser = getStoredUsername();
     const isOwnProfile = currentUser?.toLowerCase() === username.toLowerCase();
     const [profile, posts] = await fetchProfilePageData(username);
+    const postList = posts.data;
 
-    window.__routeDidMount = () => {
-      initProfileUI(username!, isOwnProfile);
-    };
+    setTimeout(() => {
+      initProfileUI(username!, postList, isOwnProfile);
+    }, 0);
 
-    return renderProfilePage(profile, posts.data, isOwnProfile);
+    return renderProfilePage(profile, postList, isOwnProfile);
   } catch (err) {
     return renderProfileError("Failed to load profile");
   }

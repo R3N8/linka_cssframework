@@ -1,0 +1,28 @@
+.card {
+  @apply rounded border;
+
+  background: white;
+  border-color: #e5e5e5;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  border-color: rgb(249 115 22);
+}
+
+.dark .card {
+  background: #111111;
+  border-color: #262626;
+}
+
+.equal-grid {
+  display: grid;
+}
+
+.equal-grid > * {
+  aspect-ratio: 1;
+}

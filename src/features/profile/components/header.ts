@@ -1,30 +1,35 @@
 import type { ProfileWithFollowData } from "../../../types";
-import { isLoggedIn } from "../../../utils/auth";
+
 
 export function renderHeader(
   profile: ProfileWithFollowData,
-  isOwn: boolean
 ) {
   return `
-    <div class="relative h-64 bg-slate-200 dark:bg-slate-800">
+    <section class="relative h-72 md:h-96 overflow-hidden">
+      ${banner(profile)}
+    </section>
+  `;
+}
 
-      ${
-        profile.banner?.url
-          ? `<img src="${profile.banner.url}" class="w-full h-full object-cover"/>`
-          : ""
-      }
+function banner(profile: ProfileWithFollowData) {
+  if (profile.banner?.url) {
+    return `
+      <div class="absolute inset-0">
+        
+        <img
+          src="${profile.banner.url}"
+          alt="${profile.name} banner"
+          class="w-full h-full object-cover"
+        />
 
-      <div class="absolute top-4 left-4 right-4 flex justify-between">
-        <button onclick="history.back()">Back</button>
+        <!-- gradient overlay -->
+        <div class="absolute inset-0 bg-linear-to-t from-white via-white/40 to-transparent dark:from-black dark:via-black/40"></div>
 
-        ${
-          !isOwn && isLoggedIn()
-            ? `<button id="follow-btn" data-user="${profile.name}">
-                Follow
-              </button>`
-            : ""
-        }
       </div>
-    </div>
+    `;
+  }
+
+  return `
+    <div class="absolute inset-0 bg-linear-to-r from-orange-500 via-orange-400 to-orange-600"></div>
   `;
 }

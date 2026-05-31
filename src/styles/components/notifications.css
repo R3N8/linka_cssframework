@@ -1,0 +1,13 @@
+.logout-notification {
+  @apply fixed top-24 right-5 z-50 rounded-xl px-6 py-4 text-white;
+
+  background: rgba(16, 185, 129, 0.95);
+
+  backdrop-filter: blur(10px);
+
+  animation: slideInRight 0.3s ease-out;
+}
+
+.notification-content {
+  @apply flex items-center gap-2 font-medium;
+}
