@@ -1,9 +1,9 @@
-import IntroAuthPage from '../pages/IntroAuthPage.js';
-import FeedPage from '../features/feed/feedPage.js';
-import ProfilePage from '../features/profile/profilePage.js';
+import IntroAuthPage from '../pages/IntroAuthPage';
+import FeedPage from '../features/feed/feedPage';
+import ProfilePage from '../features/profile/profilePage';
 import NotFoundPage from '../pages/NotFoundPage';
 
-import { APP_CONTAINER_CLASSNAME } from '../constants/app.js';
+import { APP_CONTAINER_CLASSNAME } from '../constants/app';
 import { isLoggedIn } from '../utils/auth';
 
 type RouteDef = {
