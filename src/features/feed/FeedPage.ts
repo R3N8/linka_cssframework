@@ -5,9 +5,7 @@ import { renderModals } from '../modals';
 type FeedMode = 'public' | 'auth';
 
 function getFeedMode(): FeedMode {
-  return localStorage.getItem('token')
-    ? 'auth'
-    : 'public';
+  return localStorage.getItem('token') ? 'auth' : 'public';
 }
 
 export default async function FeedPage(): Promise<string> {

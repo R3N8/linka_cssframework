@@ -58,7 +58,6 @@ export interface AuthState {
   apiKey: string;
 }
 
-
 // Create a clean object to send to our service
 export interface ErrorReport {
   message: string;

@@ -20,40 +20,40 @@ Password: Noroff@123
 
 ### Authentication
 
-- User registration requiring a `@stud.noroff.no` email address  
-- JWT-based login and secure local storage  
-- Client-side validation and helpful error messages  
-- Auto-redirects based on login status  
+- User registration requiring a `@stud.noroff.no` email address
+- JWT-based login and secure local storage
+- Client-side validation and helpful error messages
+- Auto-redirects based on login status
 
 ### Feed & Posts
 
-- Interactive post cards with click-to-view details  
-- Real-time search (users, posts, hashtags)  
-- Pagination with next/previous navigation  
-- Responsive grid layout  
-- Sample demo posts for guests  
+- Interactive post cards with click-to-view details
+- Real-time search (users, posts, hashtags)
+- Pagination with next/previous navigation
+- Responsive grid layout
+- Sample demo posts for guests
 
 ### Post Management
 
-- Create, edit, delete posts  
-- View posts of other users  
-- Full single post display with author details  
+- Create, edit, delete posts
+- View posts of other users
+- Full single post display with author details
 
 ### Post Interactions
 
-- Emoji reactions with hover modal  
-- Comment system (view and create comments)  
-- Reply to comments  
-- Share functionality (native + clipboard fallback)  
-- Media support (responsive images)  
-- Hashtags with styling indicators  
+- Emoji reactions with hover modal
+- Comment system (view and create comments)
+- Reply to comments
+- Share functionality (native + clipboard fallback)
+- Media support (responsive images)
+- Hashtags with styling indicators
 
 ### Navigation & UX
 
-- Custom client-side routing  
-- Responsive navbar with search  
-- Custom animated 404 page  
-- Loading states and error handling  
+- Custom client-side routing
+- Responsive navbar with search
+- Custom animated 404 page
+- Loading states and error handling
 
 ## Tech Stack
 
@@ -117,45 +117,45 @@ npm run preview
 
 ```md
 src/
-├── components/        # Reusable UI
-├── pages/             # Login, Register, Feed, Profile, SinglePost, 404
-├── services/          # API and business logic
-│   ├── api/           # HTTP client
-│   ├── auth/          # Authentication utils
-│   ├── posts/         # Posts API integration
-│   └── interactions/  # Comments & reactions
-├── router/            # Client-side routing
-├── types/             # TypeScript definitions
-├── utils/             # Helpers (auth, storage, ui, validators)
-├── constant.ts        # App constants
-├── main.ts            # Application entry point
-└── style.css          # Global styles
+├── components/ # Reusable UI
+├── pages/ # Login, Register, Feed, Profile, SinglePost, 404
+├── services/ # API and business logic
+│ ├── api/ # HTTP client
+│ ├── auth/ # Authentication utils
+│ ├── posts/ # Posts API integration
+│ └── interactions/ # Comments & reactions
+├── router/ # Client-side routing
+├── types/ # TypeScript definitions
+├── utils/ # Helpers (auth, storage, ui, validators)
+├── constant.ts # App constants
+├── main.ts # Application entry point
+└── style.css # Global styles
 ```
 
 ## Alignment with Course Brief
 
-- CSS Framework used: **Tailwind CSS v4** installed via npm (no CDN)  
-- At least **three pages** styled with the framework: IntroAuth, Feed, Profile  
-- One page includes **HTML validation** on a form (Register form)  
-- Work completed in branch: `css-frameworks`  
-- Deployed production build (Netlify) using Vite configuration  
-- Responsive and accessible: focus states, semantic labels, and adaptive layout  
+- CSS Framework used: **Tailwind CSS v4** installed via npm (no CDN)
+- At least **three pages** styled with the framework: IntroAuth, Feed, Profile
+- One page includes **HTML validation** on a form (Register form)
+- Work completed in branch: `css-frameworks`
+- Deployed production build (Netlify) using Vite configuration
+- Responsive and accessible: focus states, semantic labels, and adaptive layout
 
 ## Team & Contributions
 
-- Muhammad Hammad Khan (@Hammadniazi)  
-- Renate Pedersen (@03-renate)  
+- Muhammad Hammad Khan (@Hammadniazi)
+- Renate Pedersen (@03-renate)
 - Sergiu Sarbu (@sergiu-sa)
 
 ## Acknowledgments
 
-- **Noroff API v2** for backend services  
-- **Tailwind CSS** for the utility-first CSS framework  
-- **Vite** for the fast dev environment  
-- **Three.js & GSAP** for interactive 3D graphics  
-- **Font Awesome** for iconography  
-- **Netlify** for deployment and hosting  
-- **Monde Sineke** ([S3ak](https://github.com/S3ak)) – instructor guidance and starter template  
+- **Noroff API v2** for backend services
+- **Tailwind CSS** for the utility-first CSS framework
+- **Vite** for the fast dev environment
+- **Three.js & GSAP** for interactive 3D graphics
+- **Font Awesome** for iconography
+- **Netlify** for deployment and hosting
+- **Monde Sineke** ([S3ak](https://github.com/S3ak)) – instructor guidance and starter template
 
 ## License
 

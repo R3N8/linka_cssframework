@@ -2,11 +2,11 @@ import {
   followUser,
   unfollowUser,
   checkIfFollowing,
-} from "../services/followService";
-import { getStoredUsername } from "../utils/getStoredUsername";
+} from '../services/followService';
+import { getStoredUsername } from '../utils/getStoredUsername';
 
 export async function initFollowUI(targetUsername: string) {
-  const btn = document.getElementById("follow-btn") as HTMLButtonElement;
+  const btn = document.getElementById('follow-btn') as HTMLButtonElement;
   if (!btn) return;
 
   const currentUser = getStoredUsername();
@@ -16,7 +16,7 @@ export async function initFollowUI(targetUsername: string) {
 
   update(btn, isFollowing);
 
-  btn.addEventListener("click", async () => {
+  btn.addEventListener('click', async () => {
     const prev = isFollowing;
 
     try {
@@ -41,7 +41,7 @@ export async function initFollowUI(targetUsername: string) {
 }
 
 function update(btn: HTMLButtonElement, state: boolean) {
-  btn.classList.toggle("bg-slate-500", state);
-  btn.classList.toggle("bg-orange-500", !state);
-  btn.textContent = state ? "Following" : "Follow";
+  btn.classList.toggle('bg-slate-500', state);
+  btn.classList.toggle('bg-orange-500', !state);
+  btn.textContent = state ? 'Following' : 'Follow';
 }

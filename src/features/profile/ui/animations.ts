@@ -1,8 +1,8 @@
 export function initProfileAnimations() {
-  if (document.getElementById("profile-animations")) return;
+  if (document.getElementById('profile-animations')) return;
 
-  const style = document.createElement("style");
-  style.id = "profile-animations";
+  const style = document.createElement('style');
+  style.id = 'profile-animations';
 
   style.textContent = `
     @keyframes fade-in {

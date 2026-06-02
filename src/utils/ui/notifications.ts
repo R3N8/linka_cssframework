@@ -5,11 +5,7 @@ export function showNotification(
   const el = document.createElement('div');
 
   const color =
-    type === 'success'
-      ? '#22c55e'
-      : type === 'error'
-      ? '#ef4444'
-      : '#f97316';
+    type === 'success' ? '#22c55e' : type === 'error' ? '#ef4444' : '#f97316';
 
   el.style.cssText = `
     position: fixed;

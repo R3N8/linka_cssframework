@@ -1,9 +1,6 @@
-import type { ProfileWithFollowData } from "../../../types";
+import type { ProfileWithFollowData } from '../../../types';
 
-
-export function renderHeader(
-  profile: ProfileWithFollowData,
-) {
+export function renderHeader(profile: ProfileWithFollowData) {
   return `
     <section class="relative h-72 md:h-96 overflow-hidden">
       ${banner(profile)}

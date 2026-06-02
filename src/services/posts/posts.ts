@@ -1,6 +1,6 @@
-import { get, post, put, del } from "../../api/client";
-import type { NoroffPost } from "../../types/post";
-import { API } from "../api/endpoint";
+import { get, post, put, del } from '../../api/client';
+import type { NoroffPost } from '../../types/post';
+import { API } from '../api/endpoint';
 
 type PaginatedResponse<T> = {
   data: T[];
@@ -33,8 +33,8 @@ export async function searchPosts(query: string, limit = 20) {
   const params = new URLSearchParams({
     q: query,
     limit: String(limit),
-    _author: "true",
-    _reactions: "true",
+    _author: 'true',
+    _reactions: 'true',
   });
 
   return get<PaginatedResponse<NoroffPost>>(
@@ -56,13 +56,10 @@ export async function createPost(payload: {
   tags?: string[];
   media?: { url: string; alt?: string };
 }) {
-  const res = await post<{ data: NoroffPost }>(
-    API.social.posts,
-    {
-      ...payload,
-      tags: payload.tags ?? [],
-    }
-  );
+  const res = await post<{ data: NoroffPost }>(API.social.posts, {
+    ...payload,
+    tags: payload.tags ?? [],
+  });
 
   return res.data;
 }
@@ -70,8 +67,7 @@ export async function createPost(payload: {
 export const updatePost = (id: number, payload: any) =>
   put(`${API.social.posts}/${id}`, payload);
 
-export const deletePost = (id: number) =>
-  del(`${API.social.posts}/${id}`);
+export const deletePost = (id: number) => del(`${API.social.posts}/${id}`);
 
 export const reactToPost = (id: number, symbol: string) =>
   put(`${API.social.posts}/${id}/react/${symbol}`, {});

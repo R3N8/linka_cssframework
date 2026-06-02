@@ -8,11 +8,21 @@ export async function handleCreatePost(event: Event): Promise<void> {
 
   const form = event.target as HTMLFormElement;
 
-  const titleEl = document.getElementById('post-title') as HTMLInputElement | null;
-  const bodyEl = document.getElementById('post-body') as HTMLTextAreaElement | null;
-  const tagsEl = document.getElementById('post-tags') as HTMLInputElement | null;
-  const imageUrlEl = document.getElementById('post-image-url') as HTMLInputElement | null;
-  const imageAltEl = document.getElementById('post-image-alt') as HTMLInputElement | null;
+  const titleEl = document.getElementById(
+    'post-title'
+  ) as HTMLInputElement | null;
+  const bodyEl = document.getElementById(
+    'post-body'
+  ) as HTMLTextAreaElement | null;
+  const tagsEl = document.getElementById(
+    'post-tags'
+  ) as HTMLInputElement | null;
+  const imageUrlEl = document.getElementById(
+    'post-image-url'
+  ) as HTMLInputElement | null;
+  const imageAltEl = document.getElementById(
+    'post-image-alt'
+  ) as HTMLInputElement | null;
 
   if (!titleEl || !bodyEl) return;
 
@@ -25,9 +35,14 @@ export async function handleCreatePost(event: Event): Promise<void> {
     return;
   }
 
-  const tags = rawTags.split(',').map(t => t.trim()).filter(Boolean);
+  const tags = rawTags
+    .split(',')
+    .map((t) => t.trim())
+    .filter(Boolean);
 
-  const btn = form.querySelector("button[type='submit']") as HTMLButtonElement | null;
+  const btn = form.querySelector(
+    "button[type='submit']"
+  ) as HTMLButtonElement | null;
 
   try {
     if (btn) {
@@ -38,13 +53,13 @@ export async function handleCreatePost(event: Event): Promise<void> {
     const payload: any = {
       title,
       body,
-      tags
+      tags,
     };
 
     if (imageUrlEl?.value) {
       payload.media = {
         url: imageUrlEl.value,
-        alt: imageAltEl?.value || 'image'
+        alt: imageAltEl?.value || 'image',
       };
     }
 
@@ -54,18 +69,16 @@ export async function handleCreatePost(event: Event): Promise<void> {
       ...res,
       tags: res.tags || [],
       _count: res._count || { comments: 0, reactions: 0 },
-      reactions: res.reactions || []
+      reactions: res.reactions || [],
     };
 
     insertPostIntoFeed(post);
 
     form.reset();
     showNotification('Post created', 'success');
-
   } catch (err) {
     console.error(err);
     showNotification('Failed to create post', 'error');
-
   } finally {
     if (btn) {
       btn.disabled = false;

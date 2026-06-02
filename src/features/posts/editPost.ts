@@ -6,20 +6,31 @@ export function openEditPost(postId: number): void {
   if (!postEl) return;
 
   const title = postEl.querySelector('h3')?.textContent?.trim() || '';
-  const body = postEl.querySelector('p.line-clamp-3')?.textContent?.trim() || '';
+  const body =
+    postEl.querySelector('p.line-clamp-3')?.textContent?.trim() || '';
 
   const tags = Array.from(postEl.querySelectorAll('span'))
-    .map(t => t.textContent?.replace('#', '').trim())
+    .map((t) => t.textContent?.replace('#', '').trim())
     .filter(Boolean)
     .join(', ');
 
   const img = postEl.querySelector('img') as HTMLImageElement | null;
 
-  const titleEl = document.getElementById('editPostTitle') as HTMLInputElement | null;
-  const bodyEl = document.getElementById('editPostBody') as HTMLTextAreaElement | null;
-  const tagsEl = document.getElementById('editPostTags') as HTMLInputElement | null;
-  const urlEl = document.getElementById('editPostImageUrl') as HTMLInputElement | null;
-  const altEl = document.getElementById('editPostImageAlt') as HTMLInputElement | null;
+  const titleEl = document.getElementById(
+    'editPostTitle'
+  ) as HTMLInputElement | null;
+  const bodyEl = document.getElementById(
+    'editPostBody'
+  ) as HTMLTextAreaElement | null;
+  const tagsEl = document.getElementById(
+    'editPostTags'
+  ) as HTMLInputElement | null;
+  const urlEl = document.getElementById(
+    'editPostImageUrl'
+  ) as HTMLInputElement | null;
+  const altEl = document.getElementById(
+    'editPostImageAlt'
+  ) as HTMLInputElement | null;
 
   if (!titleEl || !bodyEl || !tagsEl || !urlEl || !altEl) return;
 
@@ -45,15 +56,32 @@ export async function handleEditPost(event: Event): Promise<void> {
 
   if (!postId) return;
 
-  const title = (document.getElementById('editPostTitle') as HTMLInputElement).value.trim();
-  const body = (document.getElementById('editPostBody') as HTMLTextAreaElement).value.trim();
-  const rawTags = (document.getElementById('editPostTags') as HTMLInputElement).value.trim();
-  const imageUrl = (document.getElementById('editPostImageUrl') as HTMLInputElement).value.trim();
-  const imageAlt = (document.getElementById('editPostImageAlt') as HTMLInputElement).value.trim();
+  const title = (
+    document.getElementById('editPostTitle') as HTMLInputElement
+  ).value.trim();
+  const body = (
+    document.getElementById('editPostBody') as HTMLTextAreaElement
+  ).value.trim();
+  const rawTags = (
+    document.getElementById('editPostTags') as HTMLInputElement
+  ).value.trim();
+  const imageUrl = (
+    document.getElementById('editPostImageUrl') as HTMLInputElement
+  ).value.trim();
+  const imageAlt = (
+    document.getElementById('editPostImageAlt') as HTMLInputElement
+  ).value.trim();
 
-  const tags = rawTags ? rawTags.split(',').map(t => t.trim()).filter(Boolean) : [];
+  const tags = rawTags
+    ? rawTags
+        .split(',')
+        .map((t) => t.trim())
+        .filter(Boolean)
+    : [];
 
-  const btn = modal?.querySelector('button[type="submit"]') as HTMLButtonElement | null;
+  const btn = modal?.querySelector(
+    'button[type="submit"]'
+  ) as HTMLButtonElement | null;
 
   try {
     if (btn) {
@@ -73,11 +101,9 @@ export async function handleEditPost(event: Event): Promise<void> {
     closeEditModal();
 
     showNotification('Post updated', 'success');
-
   } catch (err) {
     console.error(err);
     showNotification('Failed to update post', 'error');
-
   } finally {
     if (btn) {
       btn.disabled = false;

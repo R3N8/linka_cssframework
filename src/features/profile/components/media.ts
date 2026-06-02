@@ -1,4 +1,4 @@
-import type { NoroffPost } from "../../../types/post";
+import type { NoroffPost } from '../../../types/post';
 
 export function renderMedia(posts: NoroffPost[]): string {
   const media = posts.filter((p) => p.media?.url);
@@ -24,7 +24,7 @@ export function renderMedia(posts: NoroffPost[]): string {
           </div>
         `
         )
-        .join("")}
+        .join('')}
     </div>
   `;
 }

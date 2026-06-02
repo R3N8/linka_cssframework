@@ -1,20 +1,12 @@
-import { post, del } from "../../api/client";
-import type {
-  Comment,
-  CreateCommentResponse,
-} from "./types";
+import { post, del } from '../../api/client';
+import type { Comment, CreateCommentResponse } from './types';
 
 interface ApiResponse<T> {
   data: T;
 }
 
-function getErrorMessage(
-  error: unknown,
-  fallback: string
-): string {
-  return error instanceof Error
-    ? error.message
-    : fallback;
+function getErrorMessage(error: unknown, fallback: string): string {
+  return error instanceof Error ? error.message : fallback;
 }
 
 export async function createComment(
@@ -31,18 +23,12 @@ export async function createComment(
   }
 
   try {
-    const response = await post<
-      ApiResponse<Comment> | Comment
-    >(
+    const response = await post<ApiResponse<Comment> | Comment>(
       `/social/posts/${postId}/comment`,
       payload
     );
 
-    if (
-      response &&
-      typeof response === "object" &&
-      "data" in response
-    ) {
+    if (response && typeof response === 'object' && 'data' in response) {
       return {
         data: response.data,
       };
@@ -52,14 +38,9 @@ export async function createComment(
       data: response as Comment,
     };
   } catch (error) {
-    console.error("Error creating comment:", error);
+    console.error('Error creating comment:', error);
 
-    throw new Error(
-      getErrorMessage(
-        error,
-        "Failed to create comment."
-      )
-    );
+    throw new Error(getErrorMessage(error, 'Failed to create comment.'));
   }
 }
 
@@ -68,17 +49,10 @@ export async function deleteComment(
   commentId: string
 ): Promise<void> {
   try {
-    await del(
-      `/social/posts/${postId}/comment/${commentId}`
-    );
+    await del(`/social/posts/${postId}/comment/${commentId}`);
   } catch (error) {
-    console.error("Error deleting comment:", error);
+    console.error('Error deleting comment:', error);
 
-    throw new Error(
-      getErrorMessage(
-        error,
-        "Failed to delete comment."
-      )
-    );
+    throw new Error(getErrorMessage(error, 'Failed to delete comment.'));
   }
 }

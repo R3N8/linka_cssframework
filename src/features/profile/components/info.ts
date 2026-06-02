@@ -1,11 +1,8 @@
-import type { ProfileWithFollowData } from "../../../types";
-import { isLoggedIn } from "../../../utils/auth";
-import { formatDisplayName } from "../../../utils/formatUsername";
+import type { ProfileWithFollowData } from '../../../types';
+import { isLoggedIn } from '../../../utils/auth';
+import { formatDisplayName } from '../../../utils/formatUsername';
 
-export function renderInfo(
-  profile: ProfileWithFollowData,
-  isOwn: boolean
-) {
+export function renderInfo(profile: ProfileWithFollowData, isOwn: boolean) {
   const displayName = formatDisplayName(profile.name);
 
   return `
@@ -87,7 +84,7 @@ export function renderInfo(
           md:text-start
         "
       >
-        ${profile.bio || (isOwn ? "Add a bio" : "No bio yet")}
+        ${profile.bio || (isOwn ? 'Add a bio' : 'No bio yet')}
       </p>
 
       <div class="mt-6 flex items-center justify-between md:justify-start gap-3">
@@ -100,7 +97,7 @@ export function renderInfo(
 }
 
 function editProfileButton(profile: ProfileWithFollowData, isOwn: boolean) {
-  if (!isOwn || !isLoggedIn()) return "";
+  if (!isOwn || !isLoggedIn()) return '';
 
   return `
     <button
@@ -132,12 +129,8 @@ function editProfileButton(profile: ProfileWithFollowData, isOwn: boolean) {
   `;
 }
 
-
-function followButton(
-  profile: ProfileWithFollowData,
-  isOwn: boolean
-) {
-  if (isOwn || !isLoggedIn()) return "";
+function followButton(profile: ProfileWithFollowData, isOwn: boolean) {
+  if (isOwn || !isLoggedIn()) return '';
 
   return `
     <button
@@ -150,12 +143,8 @@ function followButton(
   `;
 }
 
-
-function messageButton(
-  profile: ProfileWithFollowData,
-  isOwn: boolean
-) {
-  if (isOwn || !isLoggedIn()) return "";
+function messageButton(profile: ProfileWithFollowData, isOwn: boolean) {
+  if (isOwn || !isLoggedIn()) return '';
 
   return `
     <button

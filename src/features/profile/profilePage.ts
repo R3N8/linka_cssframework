@@ -1,8 +1,8 @@
-import { fetchProfilePageData } from "../../services/profile/profile";
-import { renderProfilePage } from "./components/profilePage";
-import { renderProfileError } from "./components/error";
-import { initProfileUI } from "./ui/profileUI";
-import { getStoredUsername } from "./utils/getStoredUsername";
+import { fetchProfilePageData } from '../../services/profile/profile';
+import { renderProfilePage } from './components/profilePage';
+import { renderProfileError } from './components/error';
+import { initProfileUI } from './ui/profileUI';
+import { getStoredUsername } from './utils/getStoredUsername';
 
 export default async function ProfilePage(): Promise<string> {
   try {
@@ -16,7 +16,7 @@ export default async function ProfilePage(): Promise<string> {
         window.__route = { path: '/profile', query: { user: currentUser } };
         username = currentUser;
       } else {
-        return renderProfileError("No profile provided");
+        return renderProfileError('No profile provided');
       }
     }
 
@@ -31,7 +31,7 @@ export default async function ProfilePage(): Promise<string> {
 
     return renderProfilePage(profile, postList, isOwnProfile);
   } catch (err) {
-    return renderProfileError("Failed to load profile");
+    return renderProfileError('Failed to load profile');
   }
 }
 

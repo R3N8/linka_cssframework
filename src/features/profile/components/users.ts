@@ -1,4 +1,4 @@
-import type { ProfileWithFollowData } from "../../../types";
+import type { ProfileWithFollowData } from '../../../types';
 
 export function renderUsers(users: ProfileWithFollowData[]): string {
   if (!users.length) {
@@ -11,15 +11,14 @@ export function renderUsers(users: ProfileWithFollowData[]): string {
 
   return `
     <div class="grid gap-3">
-      ${users.map(renderUserCard).join("")}
+      ${users.map(renderUserCard).join('')}
     </div>
   `;
 }
 
 function renderUserCard(user: ProfileWithFollowData) {
   const avatar =
-    user.avatar?.url ||
-    `https://ui-avatars.com/api/?name=${user.name}`;
+    user.avatar?.url || `https://ui-avatars.com/api/?name=${user.name}`;
 
   return `
     <div class="flex items-center gap-3 p-3 border rounded-lg">

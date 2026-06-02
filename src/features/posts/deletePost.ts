@@ -8,7 +8,6 @@ export async function handleDeletePost(postId: number): Promise<void> {
     await deletePost(postId);
     removePostFromDOM(postId);
     showNotification('Post deleted', 'success');
-
   } catch (err) {
     console.error(err);
     showNotification('Failed to delete post', 'error');

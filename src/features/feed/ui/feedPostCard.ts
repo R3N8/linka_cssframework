@@ -1,5 +1,5 @@
-import { basePostCard } from "../../../components/basePostCard";
-import type { NoroffPost } from "../../../types/post";
+import { basePostCard } from '../../../components/basePostCard';
+import type { NoroffPost } from '../../../types/post';
 
 export function feedPostCard(post: NoroffPost, index: number): string {
   return `
@@ -8,7 +8,7 @@ export function feedPostCard(post: NoroffPost, index: number): string {
       style="animation-delay:${index * 0.05}s;animation-fill-mode:forwards"
       data-feed-post="${post.id}"
     >
-      ${basePostCard(post, "feed")}
+      ${basePostCard(post, 'feed')}
     </div>
   `;
 }

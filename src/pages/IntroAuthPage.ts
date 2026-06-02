@@ -205,10 +205,13 @@ function setupUI() {
   // Function to adjust drawer height based on active form
   const adjustDrawerHeight = () => {
     setTimeout(() => {
-      const activeForm = document.querySelector('.form-panel.active') as HTMLElement;
+      const activeForm = document.querySelector(
+        '.form-panel.active'
+      ) as HTMLElement;
       if (activeForm && drawer) {
         const formHeight = activeForm.offsetHeight;
-        const tabsHeight = document.querySelector('.flex.gap-4.mb-8')?.clientHeight || 0;
+        const tabsHeight =
+          document.querySelector('.flex.gap-4.mb-8')?.clientHeight || 0;
         const padding = 160; // Account for top padding, handle, close button
         const totalHeight = formHeight + tabsHeight + padding;
         const maxHeight = window.innerHeight * 0.85; // 85vh

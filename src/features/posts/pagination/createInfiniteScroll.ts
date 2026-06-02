@@ -15,7 +15,7 @@ export function createInfiniteScroll<T>(
   let done = false;
   let items: T[] = [];
 
-  const sentinel = document.getElementById("feed-sentinel");
+  const sentinel = document.getElementById('feed-sentinel');
 
   if (!sentinel) return;
 
@@ -29,7 +29,7 @@ export function createInfiniteScroll<T>(
       setTimeout(() => load(), 200);
     },
     {
-      rootMargin: "200px", // only load when close
+      rootMargin: '200px', // only load when close
     }
   );
 

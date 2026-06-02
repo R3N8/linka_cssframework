@@ -1,11 +1,11 @@
-import type { ProfileWithFollowData } from "../../../types";
-import type { NoroffPost } from "../../../types/post";
+import type { ProfileWithFollowData } from '../../../types';
+import type { NoroffPost } from '../../../types/post';
 
-import { renderHeader } from "./header";
-import { renderInfo } from "./info";
-import { renderStats } from "./stats";
-import { renderTabs } from "./tabs";
-import { renderPostsTab } from "./tabsContent";
+import { renderHeader } from './header';
+import { renderInfo } from './info';
+import { renderStats } from './stats';
+import { renderTabs } from './tabs';
+import { renderPostsTab } from './tabsContent';
 
 export function renderProfilePage(
   profile: ProfileWithFollowData,

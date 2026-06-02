@@ -1,4 +1,4 @@
-import type { NoroffPost } from "./types/post";
+import type { NoroffPost } from './types/post';
 
 declare global {
   interface Window {

@@ -10,11 +10,7 @@
   --color-border-light: #e5e5e5;
   --color-border-dark: #262626;
 
-  --font-sans:
-    'Space Grotesk',
-    ui-sans-serif,
-    system-ui,
-    sans-serif;
+  --font-sans: 'Space Grotesk', ui-sans-serif, system-ui, sans-serif;
 }
 
 @custom-variant dark (&:where(.dark, .dark *));

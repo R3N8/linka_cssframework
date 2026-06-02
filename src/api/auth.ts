@@ -1,12 +1,9 @@
-import { post } from "./client";
+import { post } from './client';
 
-const AUTH_URL = "https://v2.api.noroff.dev/auth";
+const AUTH_URL = 'https://v2.api.noroff.dev/auth';
 
 export function getAccessToken(): string | null {
-  return (
-    localStorage.getItem("accessToken") ||
-    localStorage.getItem("token")
-  );
+  return localStorage.getItem('accessToken') || localStorage.getItem('token');
 }
 
 export async function loginUser(data: any) {

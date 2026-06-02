@@ -9,13 +9,13 @@
 export {
   createComment,
   deleteComment,
-} from "../../features/comments/commentService";
+} from '../../features/comments/commentService';
 
 export type {
   Comment,
   CommentsResponse,
   CreateCommentResponse,
-} from "../../features/comments/types";
+} from '../../features/comments/types';
 
 // Reactions
 export {
@@ -23,9 +23,9 @@ export {
   removeReaction,
   toggleReaction,
   getPostReactions,
-} from "../../features/reactions/reactionService";
+} from '../../features/reactions/reactionService';
 
 export type {
   Reaction,
   PostWithReactions,
-} from "../../features/reactions/types";
+} from '../../features/reactions/types';

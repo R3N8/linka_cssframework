@@ -1,4 +1,4 @@
-import type { NavItem } from './navbar.config'
+import type { NavItem } from './navbar.config';
 
 export function navButton(item: NavItem, mobile = false): string {
   return `
@@ -14,7 +14,7 @@ export function navButton(item: NavItem, mobile = false): string {
     >
       ${item.label}
     </a>
-  `
+  `;
 }
 
 export function searchBar(inputId: string, buttonId: string): string {
@@ -47,7 +47,7 @@ export function searchBar(inputId: string, buttonId: string): string {
         <i class="fas fa-search text-sm"></i>
       </button>
     </div>
-  `
+  `;
 }
 
 export function themeToggle(): string {
@@ -64,10 +64,14 @@ export function themeToggle(): string {
     >
       <i class="fas fa-moon"></i>
     </button>
-  `
+  `;
 }
 
-export function iconButton(id: string, label: string, extraClasses = ''): string {
+export function iconButton(
+  id: string,
+  label: string,
+  extraClasses = ''
+): string {
   return `
     <button
       id="${id}"
@@ -81,5 +85,5 @@ export function iconButton(id: string, label: string, extraClasses = ''): string
     >
       ${label}
     </button>
-  `
+  `;
 }

@@ -1,11 +1,11 @@
-export function renderEmptyState(type: "posts" | "media") {
+export function renderEmptyState(type: 'posts' | 'media') {
   const config = {
     posts: {
-      title: "No posts yet",
+      title: 'No posts yet',
       text: "When posts are posted, they'll appear here",
     },
     media: {
-      title: "No images or videos yet",
+      title: 'No images or videos yet',
       text: "When media is posted, it'll appear here",
     },
   };

@@ -13,15 +13,15 @@ type RouteDef = {
 };
 
 const ROUTES: Record<string, RouteDef> = {
-  root:     { url: '/',         component: IntroAuthPage },
-  login:    { url: '/login',    component: IntroAuthPage },
+  root: { url: '/', component: IntroAuthPage },
+  login: { url: '/login', component: IntroAuthPage },
   register: { url: '/register', component: IntroAuthPage },
-  feed:     { url: '/feed',     component: FeedPage,    protected: true },
-  profile:  { url: '/profile',  component: ProfilePage, protected: true },
+  feed: { url: '/feed', component: FeedPage, protected: true },
+  profile: { url: '/profile', component: ProfilePage, protected: true },
 };
 
 function matchRoute(path: string): RouteDef | null {
-  return Object.values(ROUTES).find(r => r.url === path) ?? null;
+  return Object.values(ROUTES).find((r) => r.url === path) ?? null;
 }
 
 export default async function router(path: string): Promise<string> {
@@ -46,10 +46,7 @@ export default async function router(path: string): Promise<string> {
 }
 
 export async function renderRoute(path?: string) {
-  const url = new URL(
-    path ?? window.location.href,
-    window.location.origin
-  );
+  const url = new URL(path ?? window.location.href, window.location.origin);
 
   const container = document.getElementById(APP_CONTAINER_CLASSNAME);
   if (!container) return;

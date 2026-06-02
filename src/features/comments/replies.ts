@@ -4,7 +4,7 @@ import { showNotification } from '../../utils/ui/notifications';
 export function startReply(commentId: number, username: string): void {
   document
     .querySelectorAll('[id^="reply-form-"]')
-    .forEach(el => el.classList.add('hidden'));
+    .forEach((el) => el.classList.add('hidden'));
 
   const form = document.getElementById(`reply-form-${commentId}`);
   const input = document.getElementById(

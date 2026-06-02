@@ -1,17 +1,17 @@
-import { isLoggedIn } from '../../utils/auth'
-import { NAV_ITEMS } from './navbar.config'
-import { navButton, searchBar, themeToggle, iconButton } from './navbar.utils'
+import { isLoggedIn } from '../../utils/auth';
+import { NAV_ITEMS } from './navbar.config';
+import { navButton, searchBar, themeToggle, iconButton } from './navbar.utils';
 
 export function renderNavbar(): string {
-  const loggedIn = isLoggedIn()
+  const loggedIn = isLoggedIn();
 
   const desktopButtons = loggedIn
     ? NAV_ITEMS.map((i) => navButton(i)).join('')
-    : ''
+    : '';
 
   const mobileButtons = loggedIn
     ? NAV_ITEMS.map((i) => navButton(i, true)).join('')
-    : ''
+    : '';
 
   return `
     <nav id="app-navbar" class="fixed top-0 left-0 right-0 z-50 bg-surface-light dark:bg-surface-dark">
@@ -24,20 +24,25 @@ export function renderNavbar(): string {
           <i class="fa-solid fa-signal"></i> LINKA
         </a>
 
-        ${loggedIn ? `
+        ${
+          loggedIn
+            ? `
           <div class="hidden md:flex flex-1 max-w-md">
             ${searchBar('navbar-search', 'search-btn')}
           </div>
-        ` : ''}
+        `
+            : ''
+        }
 
         <div class="hidden md:flex items-center gap-4 justify-between w-full max-w-sm">
           <div class="flex items-center gap-6">
             ${desktopButtons}
           </div>
           ${themeToggle()}
-          ${loggedIn
-            ? iconButton('nav-logout', 'Logout')
-            : iconButton('nav-login', 'Login')
+          ${
+            loggedIn
+              ? iconButton('nav-logout', 'Logout')
+              : iconButton('nav-login', 'Login')
           }
         </div>
 
@@ -60,7 +65,9 @@ export function renderNavbar(): string {
       bg-surface-light dark:bg-surface-dark"
       >
 
-        ${loggedIn ? `
+        ${
+          loggedIn
+            ? `
           <div class="pt-4">
             ${searchBar('mobile-navbar-search', 'mobile-search-btn')}
           </div>
@@ -72,12 +79,14 @@ export function renderNavbar(): string {
               ${themeToggle()}
             </div>
           </div>
-        ` : `
+        `
+            : `
           <div class="pt-4">
             ${iconButton('mobile-nav-login', 'Login', 'w-full')}
           </div>
-        `}
+        `
+        }
       </div>
     </nav>
-  `
+  `;
 }

@@ -9,7 +9,7 @@ export function renderPostSkeleton(): string {
     </div>
   `
     )
-    .join("");
+    .join('');
 }
 
 export function renderUserSkeleton(): string {
@@ -25,5 +25,5 @@ export function renderUserSkeleton(): string {
     </div>
   `
     )
-    .join("");
+    .join('');
 }

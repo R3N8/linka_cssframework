@@ -9,10 +9,7 @@ import {
   getEditingPostId,
 } from './editPostModal';
 
-import {
-  openFullPostModal,
-  closeFullPostModal,
-} from './fullPostModal';
+import { openFullPostModal, closeFullPostModal } from './fullPostModal';
 
 /**
  * Renders all modal HTML into FeedPage

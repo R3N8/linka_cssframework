@@ -1,1 +1,1 @@
-export const APP_CONTAINER_CLASSNAME = "js-app";
+export const APP_CONTAINER_CLASSNAME = 'js-app';

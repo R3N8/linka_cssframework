@@ -1,6 +1,6 @@
-import { get } from "../../../api/client";
+import { get } from '../../../api/client';
 
-import type { NoroffPost } from "../../../types/post";
+import type { NoroffPost } from '../../../types/post';
 
 type PostsResponse = {
   data: NoroffPost[];

@@ -1,6 +1,6 @@
-import { get } from "../../../api/client";
+import { get } from '../../../api/client';
 
-import type { ProfileWithFollowData } from "../../../types";
+import type { ProfileWithFollowData } from '../../../types';
 
 export async function fetchUserProfile(
   username: string

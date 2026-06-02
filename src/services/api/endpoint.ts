@@ -1,4 +1,4 @@
-import { ENV } from "../../constants/env";
+import { ENV } from '../../constants/env';
 
 export const API = {
   base: ENV.API_BASE_URL,

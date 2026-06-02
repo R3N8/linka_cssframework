@@ -31,8 +31,7 @@ export async function loadComments(postId: number): Promise<void> {
 
   try {
     const token =
-      localStorage.getItem('accessToken') ||
-      localStorage.getItem('token');
+      localStorage.getItem('accessToken') || localStorage.getItem('token');
 
     const apiKey = localStorage.getItem('apiKey') || '';
 
@@ -95,12 +94,17 @@ export async function submitComment(postId: number): Promise<void> {
 
     const container = document.getElementById(`comments-list-${postId}`);
     if (container) {
-      renderComment(container, postId, {
-        id: res.data.id,
-        body: text,
-        created: new Date().toISOString(),
-        author: { name: currentUser || 'You', avatar: null },
-      }, currentUser);
+      renderComment(
+        container,
+        postId,
+        {
+          id: res.data.id,
+          body: text,
+          created: new Date().toISOString(),
+          author: { name: currentUser || 'You', avatar: null },
+        },
+        currentUser
+      );
     }
 
     showNotification('Comment added', 'success');

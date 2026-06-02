@@ -1,6 +1,6 @@
-import { get, put } from "../../../api/client";
+import { get, put } from '../../../api/client';
 
-import type { ProfileWithFollowData } from "../../../types";
+import type { ProfileWithFollowData } from '../../../types';
 
 export async function followUser(username: string) {
   return put(`/social/profiles/${username}/follow`, {});
@@ -18,9 +18,5 @@ export async function checkIfFollowing(
     `/social/profiles/${currentUser}?_following=true`
   );
 
-  return (
-    res.data.following?.some(
-      (user) => user.name === targetUser
-    ) || false
-  );
+  return res.data.following?.some((user) => user.name === targetUser) || false;
 }

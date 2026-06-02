@@ -1,10 +1,13 @@
-import type { NoroffPost } from "../types/post";
-import { timeAgo } from "../features/profile/utils/timeAgo";
+import type { NoroffPost } from '../types/post';
+import { timeAgo } from '../features/profile/utils/timeAgo';
 
-type CardVariant = "feed" | "profile";
+type CardVariant = 'feed' | 'profile';
 
-export function basePostCard(post: NoroffPost, variant: CardVariant = "feed"): string {
-  if (variant === "profile") return profileCard(post);
+export function basePostCard(
+  post: NoroffPost,
+  variant: CardVariant = 'feed'
+): string {
+  if (variant === 'profile') return profileCard(post);
   return feedCard(post);
 }
 
@@ -178,7 +181,7 @@ function feedCard(post: NoroffPost): string {
                 View more
               </button>
             `
-            : ""
+            : ''
         }
       </div>
 
@@ -198,13 +201,13 @@ function feedCard(post: NoroffPost): string {
                     </span>
                   `
                 )
-                .join("")}
+                .join('')}
             </div>
           `
-          : ""
+          : ''
       }
 
-      ${!hasMedia ? statsBar : ""}
+      ${!hasMedia ? statsBar : ''}
 
       <div class="px-4 py-3 text-xs text-neutral-400">
         ${timeAgo(new Date(post.created))}
