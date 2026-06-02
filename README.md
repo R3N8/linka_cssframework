@@ -1,19 +1,16 @@
-# LINKA – Social Media Platform
+# LINKA
 
-A modern, responsive social media application built with TypeScript, Vite, Tailwind CSS v4, and the Noroff Social API v2.  
-This project demonstrates contemporary web development practices: CSS framework integration, authenticated API consumption, CRUD operations, modular architecture, and production-ready deployment.
-
-**Final submission for Noroff FED2-24 CSS Frameworks Course Assignment.**
+A modern, responsive social media application built with TypeScript, Vite, Tailwind CSS v4, and the Noroff Social API v2.
 
 ## Live Project & Repository
 
-**Production Deploy:** [https://linka.netlify.app/](https://linka1.netlify.app/)  
-**GitHub Repository:** [https://github.com/R3N8/social_platform.git](https://github.com/R3N8/social_platform.git)  
+**Production Deploy:** [https://linka.netlify.app/](https://linka-css-frameworks-ca.netlify.app/)  
+**GitHub Repository:** [https://github.com/R3N8/social_platform.git](https://github.com/R3N8/linka_cssframework)  
 **API Base URL:** [https://v2.api.noroff.dev/social/posts](https://v2.api.noroff.dev/social/posts)
 
 ## Login Details (Demo)
 
-Email: [h-s-r@stud.noroff.no](mailto:h-s-r@stud.noroff.no)  
+Email: h-s-r@stud.noroff.no
 Password: Noroff@123
 
 ## Features
@@ -81,21 +78,17 @@ Password: Noroff@123
 ### Installation
 
 ```bash
-git clone https://github.com/R3N8/social_platform.git
+git clone https://github.com/R3N8/linka_cssframework
 cd social_platform
 npm install
 cp .env.example .env
 ```
 
-Edit `.env` with your configuration.
-
 ### Environment Variables
 
-Create a `.env` file with:
-
 ```bash
-
-VITE_API_BASE_URL=https://v2.api.noroff.dev/social
+VITE_APP_NAME=""
+VITE_BASE_URL=""
 ```
 
 ### Development
@@ -104,48 +97,12 @@ VITE_API_BASE_URL=https://v2.api.noroff.dev/social
 npm run dev
 ```
 
-Open [http://localhost:5173](http://localhost:5173) in your browser.
-
 ### Build for Production
 
 ```bash
 npm run build
 npm run preview
 ```
-
-## Project Structure
-
-```md
-src/
-├── components/ # Reusable UI
-├── pages/ # Login, Register, Feed, Profile, SinglePost, 404
-├── services/ # API and business logic
-│ ├── api/ # HTTP client
-│ ├── auth/ # Authentication utils
-│ ├── posts/ # Posts API integration
-│ └── interactions/ # Comments & reactions
-├── router/ # Client-side routing
-├── types/ # TypeScript definitions
-├── utils/ # Helpers (auth, storage, ui, validators)
-├── constant.ts # App constants
-├── main.ts # Application entry point
-└── style.css # Global styles
-```
-
-## Alignment with Course Brief
-
-- CSS Framework used: **Tailwind CSS v4** installed via npm (no CDN)
-- At least **three pages** styled with the framework: IntroAuth, Feed, Profile
-- One page includes **HTML validation** on a form (Register form)
-- Work completed in branch: `css-frameworks`
-- Deployed production build (Netlify) using Vite configuration
-- Responsive and accessible: focus states, semantic labels, and adaptive layout
-
-## Team & Contributions
-
-- Muhammad Hammad Khan (@Hammadniazi)
-- Renate Pedersen (@03-renate)
-- Sergiu Sarbu (@sergiu-sa)
 
 ## Acknowledgments
 
@@ -156,7 +113,3 @@ src/
 - **Font Awesome** for iconography
 - **Netlify** for deployment and hosting
 - **Monde Sineke** ([S3ak](https://github.com/S3ak)) – instructor guidance and starter template
-
-## License
-
-This project is for educational purposes as part of the **Noroff FED2-24 Front-End Development** program.
