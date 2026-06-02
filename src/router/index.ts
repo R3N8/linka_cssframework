@@ -1,6 +1,6 @@
 import IntroAuthPage from '../pages/IntroAuthPage.js';
-import FeedPage from '../features/feed/FeedPage.js';
-import ProfilePage from '../features/profile/ProfilePage';
+import FeedPage from '../features/feed/feedPage.js';
+import ProfilePage from '../features/profile/profilePage.js';
 import NotFoundPage from '../pages/NotFoundPage';
 
 import { APP_CONTAINER_CLASSNAME } from '../constants/app.js';

@@ -1,4 +1,4 @@
-import { toggleReaction } from '../../services/interactions/interactions';
+import { toggleReaction } from '../../services/interactions';
 import { showNotification } from '../../utils/ui/notifications';
 
 export async function handleToggleReaction(

@@ -1,4 +1,4 @@
-import { createComment, deleteComment } from '../../services/interactions/interactions';
+import { createComment, deleteComment } from '../../services/interactions';
 import { getLocalItem } from '../../utils/storage';
 import { showNotification } from '../../utils/ui/notifications';
 

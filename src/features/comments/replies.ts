@@ -1,5 +1,4 @@
-import { createComment } from '../../services/interactions/interactions';
-import { getLocalItem } from '../../utils/storage';
+import { createComment } from '../../services/interactions';
 import { showNotification } from '../../utils/ui/notifications';
 
 export function startReply(commentId: number, username: string): void {
