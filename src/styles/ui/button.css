@@ -20,9 +20,14 @@
           transition-all duration-150;
   }
 
-.tab-btn.active {
-  color: var(--color-accent);
-  border-bottom-color: var(--color-accent);
-}
+  .tab-btn.active {
+    color: var(--color-accent);
+    border-bottom-color: var(--color-accent);
+  }
+
+  .follow-btn {
+    @apply text-xs font-medium px-3 py-2 rounded cursor-pointer
+            bg-zinc-950/20 backdrop-blur-sm hover:scale-105;
+  }
 
 }

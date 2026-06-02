@@ -15,20 +15,15 @@ export function renderProfilePage(
   return `
     <div class="profile-page min-h-screen bg-bg-light dark:bg-bg-dark">
 
-      <div class="bg-bg-light dark:bg-bg-dark overflow-hidden">
-
+      <div class="w-full mx-auto">
         ${renderHeader(profile)}
+        ${renderInfo(profile, isOwnProfile)}
+        ${renderStats(profile)}
+        ${renderTabs()}
+      </div>
 
-        <div class="mx-auto">
-          ${renderInfo(profile, isOwnProfile)}
-          ${renderStats(profile)}
-          ${renderTabs()}
-        </div>
-
-        <div id="profile-tab-content" class="p-6">
-          ${renderPostsTab(posts)}
-        </div>
-
+      <div id="profile-tab-content" class="max-w-4xl mx-auto p-6">
+        ${renderPostsTab(posts)}
       </div>
 
     </div>

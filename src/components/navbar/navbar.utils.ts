@@ -26,7 +26,7 @@ export function searchBar(inputId: string, buttonId: string): string {
         placeholder="Search..."
         class="
           w-full h-10 px-4 pr-12 rounded text-sm
-          bg-surface-light dark:bg-surface-dark
+          bg-bg-light dark:bg-bg-dark
           border border-border-light dark:border-border-dark
           focus:border-accent dark:focus:border-accent
           focus:outline-none
@@ -40,7 +40,7 @@ export function searchBar(inputId: string, buttonId: string): string {
         type="button"
         class="
           absolute right-3 top-1/2 -translate-y-1/2
-         text-neutral-400 hover:text-accent
+         text-accent hover:text-accent
           transition-colors duration-150 cursor-pointer
         "
       >

@@ -1,11 +1,11 @@
 @theme {
   --color-accent: rgb(249 115 22);
 
-  --color-bg-light: #ffffff;
-  --color-bg-dark: #0a0a0a;
+  --color-bg-light: oklch(98.5% 0 0);
+  --color-bg-dark: oklch(14.1% 0.005 285.823);
 
-  --color-surface-light: #fafafa;
-  --color-surface-dark: #111111;
+  --color-surface-light: oklch(96.7% 0.001 286.375);
+  --color-surface-dark: oklch(27.4% 0.006 286.033);
 
   --color-border-light: #e5e5e5;
   --color-border-dark: #262626;

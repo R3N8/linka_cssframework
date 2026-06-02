@@ -14,7 +14,7 @@ export function renderNavbar(): string {
     : ''
 
   return `
-    <nav id="app-navbar" class="fixed top-0 left-0 right-0 z-50 bg-bg-light dark:bg-bg-dark border-b border-border-dark dark:border-border-light">
+    <nav id="app-navbar" class="fixed top-0 left-0 right-0 z-50 bg-surface-light dark:bg-surface-dark">
 
       <div class="h-16 max-w-7xl mx-auto px-4 flex items-center justify-between gap-4">
 
@@ -31,17 +31,14 @@ export function renderNavbar(): string {
         ` : ''}
 
         <div class="hidden md:flex items-center gap-4 justify-between w-full max-w-sm">
-          <div class="hidden md:flex items-center gap-6">
+          <div class="flex items-center gap-6">
             ${desktopButtons}
           </div>
-
-          <div class="hidden md:flex items-center justify-center gap-8">
-            ${themeToggle()}
-            ${loggedIn
-              ? iconButton('nav-logout', 'Logout')
-              : iconButton('nav-login', 'Login')
-            }
-          </div>
+          ${themeToggle()}
+          ${loggedIn
+            ? iconButton('nav-logout', 'Logout')
+            : iconButton('nav-login', 'Login')
+          }
         </div>
 
         <button
@@ -60,7 +57,7 @@ export function renderNavbar(): string {
 
       <div id="mobile-menu" class="hidden md:hidden px-4 pb-4 
         border-t border-border-light dark:border-border-dark
-      bg-bg-light dark:bg-bg-dark"
+      bg-surface-light dark:bg-surface-dark"
       >
 
         ${loggedIn ? `
